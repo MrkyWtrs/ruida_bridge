@@ -23,6 +23,7 @@ Home Assistant add-on for connecting a Ruida laser controller to Home Assistant 
 - Preview modes:
   - **EXTENTS**
   - **BED VIEW**
+<img width="1839" height="917" alt="image" src="https://github.com/user-attachments/assets/22d009bf-7d4f-41aa-9195-8fa0e57b48bd" />
 
 ---
 
