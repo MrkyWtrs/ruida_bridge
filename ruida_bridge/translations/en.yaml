@@ -1,0 +1,49 @@
+configuration:
+  mqtt_host:
+    name: MQTT Host
+  mqtt_port:
+    name: MQTT Port
+  mqtt_user:
+    name: MQTT Username
+  mqtt_pass:
+    name: MQTT Password
+  mqtt_topic_prefix:
+    name: MQTT Topic Prefix
+  mqtt_client_id:
+    name: MQTT Client ID
+  ha_discovery_prefix:
+    name: Home Assistant Discovery Prefix
+  ruida_ip:
+    name: Ruida Controller IP
+  ruida_port:
+    name: Ruida Controller Port
+  ruida_local_port:
+    name: Local UDP Port
+  ruida_max_x_mm:
+    name: Maximum X Travel (mm)
+  ruida_max_y_mm:
+    name: Maximum Y Travel (mm)
+  ruida_z_button_step_mm:
+    name: Z Button Step (mm)
+  device_id:
+    name: Device ID
+  device_name:
+    name: Device Name
+  entity_prefix:
+    name: Entity Prefix
+  preview_fit_mode:
+    name: Preview Fit Mode
+  preview_show_grid:
+    name: Preview Show Grid
+  preview_show_points:
+    name: Preview Show Points
+  preview_show_bounds:
+    name: Preview Show Bounds
+  preview_show_labels:
+    name: Preview Show Labels
+  preview_line_width:
+    name: Preview Line Width
+  preview_background:
+    name: Preview Background
+  preview_foreground:
+    name: Preview Foreground

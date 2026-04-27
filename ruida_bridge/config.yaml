@@ -1,0 +1,74 @@
+name: "Ruida Bridge"
+version: "0.8.4"
+slug: "ruida_bridge"
+description: "Home Assistant app for bridging Ruida controller functions into Home Assistant."
+init: false
+arch:
+  - amd64
+  - aarch64
+startup: application
+boot: auto
+host_network: true
+
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:bridge
+panel_title: Ruida Bridge
+
+map:
+  - type: addon_config
+    read_only: false
+  - type: homeassistant_config
+    read_only: false
+
+options:
+  mqtt_host: "core-mosquitto"
+  mqtt_port: 1883
+  mqtt_user: ""
+  mqtt_pass: ""
+  mqtt_topic_prefix: "ruida"
+  mqtt_client_id: "ruida-ha-bridge"
+  ha_discovery_prefix: "homeassistant"
+  ruida_ip: "0.0.0.0"
+  ruida_port: 50200
+  ruida_local_port: 40200
+  ruida_max_x_mm: 0
+  ruida_max_y_mm: 0
+  ruida_z_button_step_mm: 1
+  device_id: "ruida_bridge"
+  device_name: "Ruida Bridge"
+  entity_prefix: "ruida"
+  preview_fit_mode: "geometry"
+  preview_show_grid: false
+  preview_show_points: false
+  preview_show_bounds: false
+  preview_show_labels: false
+  preview_line_width: 2
+  preview_background: "transparent"
+  preview_foreground: "white"
+
+schema:
+  mqtt_host: str
+  mqtt_port: port
+  mqtt_user: str?
+  mqtt_pass: password?
+  mqtt_topic_prefix: str
+  mqtt_client_id: str
+  ha_discovery_prefix: str
+  ruida_ip: str
+  ruida_port: port
+  ruida_local_port: port
+  ruida_max_x_mm: float
+  ruida_max_y_mm: float
+  ruida_z_button_step_mm: int(1,100)
+  device_id: str
+  device_name: str
+  entity_prefix: str
+  preview_fit_mode: list(geometry|bed)
+  preview_show_grid: bool
+  preview_show_points: bool
+  preview_show_bounds: bool
+  preview_show_labels: bool
+  preview_line_width: int(1,20)
+  preview_background: str
+  preview_foreground: str

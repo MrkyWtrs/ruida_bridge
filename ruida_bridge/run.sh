@@ -1,0 +1,31 @@
+#!/usr/bin/with-contenv bashio
+
+export MQTT_HOST="$(bashio::config 'mqtt_host')"
+export MQTT_PORT="$(bashio::config 'mqtt_port')"
+export MQTT_USER="$(bashio::config 'mqtt_user')"
+export MQTT_PASS="$(bashio::config 'mqtt_pass')"
+export MQTT_TOPIC_PREFIX="$(bashio::config 'mqtt_topic_prefix')"
+export MQTT_CLIENT_ID="$(bashio::config 'mqtt_client_id')"
+export HA_DISCOVERY_PREFIX="$(bashio::config 'ha_discovery_prefix')"
+export RUIDA_IP="$(bashio::config 'ruida_ip')"
+export RUIDA_PORT="$(bashio::config 'ruida_port')"
+export RUIDA_LOCAL_PORT="$(bashio::config 'ruida_local_port')"
+export RUIDA_MAX_X_MM="$(bashio::config 'ruida_max_x_mm')"
+export RUIDA_MAX_Y_MM="$(bashio::config 'ruida_max_y_mm')"
+export RUIDA_Z_BUTTON_STEP_MM="$(bashio::config 'ruida_z_button_step_mm')"
+export RUIDA_DEVICE_ID="$(bashio::config 'device_id')"
+export RUIDA_DEVICE_NAME="$(bashio::config 'device_name')"
+export RUIDA_ENTITY_PREFIX="$(bashio::config 'entity_prefix')"
+export RUIDA_PREVIEW_FIT_MODE="$(bashio::config 'preview_fit_mode')"
+export RUIDA_PREVIEW_SHOW_GRID="$(bashio::config 'preview_show_grid')"
+export RUIDA_PREVIEW_SHOW_POINTS="$(bashio::config 'preview_show_points')"
+export RUIDA_PREVIEW_SHOW_BOUNDS="$(bashio::config 'preview_show_bounds')"
+export RUIDA_PREVIEW_SHOW_LABELS="$(bashio::config 'preview_show_labels')"
+export RUIDA_PREVIEW_LINE_WIDTH="$(bashio::config 'preview_line_width')"
+export RUIDA_PREVIEW_BACKGROUND="$(bashio::config 'preview_background')"
+export RUIDA_PREVIEW_FOREGROUND="$(bashio::config 'preview_foreground')"
+export RUIDA_WEB_PORT="8099"
+export RUIDA_APP_VERSION="$(bashio::addon.version)"
+
+python3 /web.py &
+exec python3 /app.py

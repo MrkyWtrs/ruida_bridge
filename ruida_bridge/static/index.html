@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruida Bridge</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">
+          <img src="ruida_bridge_icon.png" alt="" class="brand-icon-image">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title-row">
+            <h1>Ruida Bridge</h1>
+            <div id="versionPill" class="version-pill">v—</div>
+          </div>
+          <p>Laser controller dashboard</p>
+        </div>
+      </div>
+
+      <div class="topbar-status">
+        <div id="bridgeBadge" class="status-pill unknown"><span></span><strong>Unknown</strong></div>
+      </div>
+    </header>
+
+    <section id="setupWarning" class="setup-warning" hidden>
+      <div class="setup-warning-inner">
+        <div class="setup-warning-icon" aria-hidden="true">!</div>
+        <div>
+          <h2>Ruida Bridge needs setup</h2>
+          <p>
+            Open the Home Assistant add-on Configuration tab and enter your MQTT settings,
+            Ruida controller IP address, and machine travel limits. Restart the add-on after saving.
+          </p>
+          <ul id="setupMissingList"></ul>
+          <p class="setup-warning-path">
+            Settings → Add-ons → Ruida Bridge → Configuration
+          </p>
+          <button id="dismissSetupWarning" class="setup-dismiss-button" type="button">
+            Dismiss / Preview UI Anyway
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="quadrant-grid" id="dashboardGrid">
+      <div class="left-column">
+        <section class="preview-card quadrant preview-quadrant">
+          <div class="preview-header">
+            <div class="preview-title-line">
+              <span class="section-label">Preview</span>
+              <strong id="previewTitle">No preview loaded</strong>
+              <span id="previewSize" class="preview-size-inline">— mm × — mm</span>
+            </div>
+            <div class="preview-meta-line">
+              <label class="preview-fit-toggle" title="Toggle between extents preview and full bed placement preview">
+                <span id="previewFit" class="preview-fit-toggle-label">EXTENTS</span>
+                <input id="previewFitToggle" type="checkbox">
+              </label>
+            </div>
+          </div>
+
+          <div class="preview-body">
+            <div id="topRuler" class="ruler top-ruler" aria-hidden="true"></div>
+            <div id="leftRuler" class="ruler left-ruler" aria-hidden="true"></div>
+
+            <div class="preview-frame">
+              <img id="previewImage" alt="RD preview image">
+</div>
+          </div>
+        </section>
+
+        <section class="card machine-extras-card">
+          <div class="machine-extras-grid">
+            <div class="machine-extras-pane machine-extras-left">
+              <div class="card-title"><span>◉</span><h2>Lasers</h2></div>
+
+              <div class="laser-switch-list">
+                <div class="laser-switch-row">
+                  <span class="laser-switch-name">Laser 1 Enable</span>
+                  <div class="laser-switch-control">
+                    <input id="laser1Toggle" class="laser-toggle" type="checkbox" disabled>
+                    <strong id="laser1State" class="laser-switch-state">OFF</strong>
+                  </div>
+                </div>
+
+                <div class="laser-switch-row">
+                  <span class="laser-switch-name">Laser 2 Enable</span>
+                  <div class="laser-switch-control">
+                    <input id="laser2Toggle" class="laser-toggle" type="checkbox" disabled>
+                    <strong id="laser2State" class="laser-switch-state">OFF</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="machine-extras-pane machine-extras-right">
+              <div class="card-title"><span>⋯</span><h2>Machine Settings</h2></div>
+              <div id="unusedSettingsList" class="unused-settings-list">
+                <div class="unused-settings-empty">No machine settings loaded.</div>
+              </div>
+            </div>
+          </div>
+        </section>
+</div>
+
+      <div class="middle-column">
+        <section class="axis-controls quadrant controls-quadrant" aria-label="Axis controls">
+          <section class="card xy-card">
+            <div class="jog-combined">
+              <div class="xy-pad">
+                <button class="jog-button up" type="button" data-action="up"><span class="arrow">↑</span><span>Up</span></button>
+                <button class="jog-button left" type="button" data-action="left"><span class="arrow">←</span><span>Left</span></button>
+                <button class="jog-button home" type="button" data-action="home"><span class="home-icon">⌂</span><span>Home</span></button>
+                <button class="jog-button right" type="button" data-action="right"><span class="arrow">→</span><span>Right</span></button>
+                <button class="jog-button down" type="button" data-action="down"><span class="arrow">↓</span><span>Down</span></button>
+              </div>
+
+              <div class="z-inline">
+                <div class="z-stack">
+                  <button class="large-action" type="button" data-action="z_up"><span>↑</span><strong>Z Up</strong></button>
+                  <button class="large-action" type="button" data-action="z_down"><span>↓</span><strong>Z Down</strong></button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="card machine-card">
+                  <div>
+                    <div class="card-title"><span>◆</span><h2>Machine Info</h2></div>
+        
+                    <div class="machine-info">
+                      <div><span>Status</span><strong id="machineState">unknown</strong></div>
+                      <div>
+                        <span>Position</span>
+                        <strong id="positionState" class="position-value">unknown</strong>
+                      </div>
+                      <div class="rotary-inline-row">
+                        <div class="rotary-inline-labels">
+                          <span class="rotary-left-label">Rotary</span>
+                          <span class="rotary-right-label">Diameter</span>
+                        </div>
+                        <div class="rotary-inline-controls">
+                          <label class="rotary-switch" title="Enable or disable rotary mode">
+                            <input id="rotaryToggle" type="checkbox">
+                            <strong id="rotaryState" class="rotary-switch-label">unknown</strong>
+                          </label>
+                          <div class="rotary-diameter-block">
+<div class="rotary-diameter-inline">
+                              <input id="rotaryDiameter" type="number" min="1" max="1000" step="0.01" placeholder="mm">
+                              <button id="setRotaryDiameter" class="mini-button" type="button">Set</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>            </div>
+                  </div>
+                </section>
+</div>
+
+      <div class="right-column">
+        <section class="card files-card files-quadrant">
+          <div class="card-title"><span>▣</span><h2>Files</h2></div>
+          <div class="files-table-wrap">
+            <table class="files-table">
+              <thead>
+                <tr><th>Slot</th><th>Name</th><th>Runtime</th></tr>
+              </thead>
+              <tbody id="filesTableBody">
+                <tr class="empty-row"><td colspan="3">Click Get Files to load saved controller files.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="files-footer">
+            <button class="wide-button" type="button" data-action="file_list"><span>⇩</span>Get Files</button>
+            <button id="useSelected" class="wide-button" type="button"><span>↻</span>Refresh</button>
+          </div>
+
+          <div class="files-path-row">
+            <label for="rdPath">Preview File Path</label>
+            <textarea id="rdPath" rows="2" placeholder="Enter RD file path or click a saved file" spellcheck="false"></textarea>
+          </div>
+
+          <strong id="selectedFileName" hidden>None</strong>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
