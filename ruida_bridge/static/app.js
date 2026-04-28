@@ -383,23 +383,6 @@ function syncJogHeightToPreview() {
 window.addEventListener('resize', syncJogHeightToPreview);
 
 
-function syncPlaceholderHeightToMachine() {
-  const machineCard = document.querySelector('.machine-card');
-  const placeholderCard = document.querySelector('.placeholder-card');
-
-  if (!machineCard || !placeholderCard) return;
-
-  if (window.matchMedia('(min-width: 1101px)').matches) {
-    const machineHeight = Math.round(machineCard.getBoundingClientRect().height);
-    if (machineHeight > 0) {
-      placeholderCard.style.height = `${machineHeight}px`;
-    }
-  } else {
-    placeholderCard.style.height = '';
-  }
-}
-
-window.addEventListener('resize', syncPlaceholderHeightToMachine);
 
 function refreshPreviewImage(force = false) {
   const hasPreviewLoaded = previewFrame.classList.contains('has-image');

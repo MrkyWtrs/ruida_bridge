@@ -8,7 +8,6 @@ import traceback
 import shutil
 import paho.mqtt.client as mqtt
 from PIL import Image, ImageDraw
-print("RUIDA APP STARTED", flush=True)
 
 
 DEVICE_ID = os.environ.get("RUIDA_DEVICE_ID", "ruida_bridge")
@@ -376,6 +375,17 @@ current_y_mm = None
 current_z_mm = None
 cached_settings = {}
 settings_loaded = False
+
+
+def active_axis_max(axis: str) -> float:
+    """Return the active max travel for an axis from controller/override settings."""
+    key = f"{axis.lower()}_max_travel"
+    try:
+        value = float((cached_settings or {}).get(key) or 0)
+    except Exception:
+        value = 0.0
+    return value if value > 0 else 0.0
+
 
 def decode_ruida_u35(data: bytes) -> int:
     """Decode a 5-byte Ruida unsigned value using 7-bit payload bytes."""
@@ -2200,11 +2210,13 @@ def render_preview_png(
 
     # Render oversize first, then downsample for normal vector previews.
     # Dense scan/fill previews render at final size to avoid downsample banding.
-    # Bed view uses the configured bed aspect ratio so the web ruler scale
+    # Bed view uses the active machine extents so the web ruler scale
     # matches the rendered bed frame.
     final_width_px = 1200
-    if fit_mode == "bed" and MAX_X_MM > 0 and MAX_Y_MM > 0:
-        final_height_px = max(1, int(round(final_width_px * (MAX_Y_MM / MAX_X_MM))))
+    active_x_max = active_axis_max("x")
+    active_y_max = active_axis_max("y")
+    if fit_mode == "bed" and active_x_max > 0 and active_y_max > 0:
+        final_height_px = max(1, int(round(final_width_px * (active_y_max / active_x_max))))
     else:
         final_height_px = 900
 
@@ -2235,8 +2247,8 @@ def render_preview_png(
     if fit_mode == "bed":
         view_min_x = 0.0
         view_min_y = 0.0
-        view_max_x = max(MAX_X_MM, bounds["max_x_mm"], 1.0)
-        view_max_y = max(MAX_Y_MM, bounds["max_y_mm"], 1.0)
+        view_max_x = max(active_x_max, bounds["max_x_mm"], 1.0)
+        view_max_y = max(active_y_max, bounds["max_y_mm"], 1.0)
     else:
         geom_w = max(bounds["width_mm"], 1.0)
         geom_h = max(bounds["height_mm"], 1.0)
@@ -2745,7 +2757,6 @@ def publish_discovery() -> None:
 
 
 def on_connect(client, userdata, flags, reason_code, properties):
-    print(f"ON_CONNECT fired reason_code={reason_code}", flush=True)
     client.subscribe(CMD_TOPIC, qos=1)
     client.publish(STATE_TOPIC, payload="online", qos=1, retain=True)
     command_queue.put("sync_files")
@@ -2891,7 +2902,21 @@ def on_message(client, userdata, msg):
                 target_x_mm = current_x_mm + dx_mm
                 target_y_mm = current_y_mm + dy_mm
 
-                if not (0 <= target_x_mm <= MAX_X_MM and 0 <= target_y_mm <= MAX_Y_MM):
+                x_max = active_axis_max("x")
+                y_max = active_axis_max("y")
+
+                if x_max <= 0 or y_max <= 0:
+                    publish_result(
+                        False,
+                        error="machine_extents_unavailable",
+                        dx=dx_mm,
+                        dy=dy_mm,
+                        target_x=target_x_mm,
+                        target_y=target_y_mm,
+                    )
+                    return
+
+                if not (0 <= target_x_mm <= x_max and 0 <= target_y_mm <= y_max):
                     publish_result(
                         False,
                         error="out_of_bounds",
@@ -2899,6 +2924,9 @@ def on_message(client, userdata, msg):
                         dy=dy_mm,
                         target_x=target_x_mm,
                         target_y=target_y_mm,
+                        x_max_mm=round(x_max, 3),
+                        y_max_mm=round(y_max, 3),
+                        override_controller_extents=bool(OVERRIDE_CONTROLLER_EXTENTS),
                     )
                     return
 
@@ -2910,8 +2938,23 @@ def on_message(client, userdata, msg):
                 x_mm = float(data["x"])
                 y_mm = float(data["y"])
 
-                if not (0 <= x_mm <= MAX_X_MM and 0 <= y_mm <= MAX_Y_MM):
-                    publish_result(False, error="out_of_bounds", x=x_mm, y=y_mm)
+                x_max = active_axis_max("x")
+                y_max = active_axis_max("y")
+
+                if x_max <= 0 or y_max <= 0:
+                    publish_result(False, error="machine_extents_unavailable", x=x_mm, y=y_mm)
+                    return
+
+                if not (0 <= x_mm <= x_max and 0 <= y_mm <= y_max):
+                    publish_result(
+                        False,
+                        error="out_of_bounds",
+                        x=x_mm,
+                        y=y_mm,
+                        x_max_mm=round(x_max, 3),
+                        y_max_mm=round(y_max, 3),
+                        override_controller_extents=bool(OVERRIDE_CONTROLLER_EXTENTS),
+                    )
                     return
 
                 send_abs_xy(x_mm, y_mm)
@@ -2955,9 +2998,7 @@ if MQTT_USER:
 client.will_set(STATE_TOPIC, payload="offline", qos=1, retain=True)
 client.on_connect = on_connect
 client.on_message = on_message
-print("BEFORE MQTT CONNECT", flush=True)
 client.connect(MQTT_HOST, MQTT_PORT, keepalive=60)
-print("AFTER MQTT CONNECT", flush=True)
 client.loop_start()
 
 publish_discovery()

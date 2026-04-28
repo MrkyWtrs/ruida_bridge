@@ -110,14 +110,6 @@ This app expects these values from the Home Assistant app configuration:
 - `device_id`
 - `device_name`
 - `entity_prefix`
-- `preview_fit_mode`
-- `preview_show_grid`
-- `preview_show_points`
-- `preview_show_bounds`
-- `preview_show_labels`
-- `preview_line_width`
-- `preview_background`
-- `preview_foreground`
 
 These values are exported by `run.sh` as environment variables for `app.py`. The same MQTT-related values are also used by `web.py` for the Ingress frontend.
 
@@ -156,32 +148,25 @@ Changing device_name changes the displayed Home Assistant device name.
 
 Changing device_id changes the MQTT discovery device identifier and discovery topic path. Use a unique device_id if running more than one Ruida Bridge instance.
 
-## Preview rendering options
+## Preview rendering behavior
 
-Version 0.5.1 adds configurable preview rendering options.
+Preview styling is intentionally fixed for consistent Home Assistant display:
 
-Default values:
-
-- `preview_fit_mode`: `geometry`
-- `preview_show_grid`: `true`
-- `preview_show_points`: `false`
-- `preview_show_bounds`: `true`
-- `preview_show_labels`: `true`
-- `preview_line_width`: `4`
-- `preview_background`: `MediumBlue`
-- `preview_foreground`: `white`
+- transparent PNG background
+- white preview geometry
+- line width 2
+- no grid, point markers, bounds box, or in-image labels
 
 Preview fit modes:
 
 - `geometry`: fits the rendered image tightly around parsed geometry with a small margin.
-- `bed`: renders against the configured bed size using `ruida_max_x_mm` and `ruida_max_y_mm`.
+- `bed`: renders against the active X/Y machine travel limits. By default those limits come from controller-reported settings. If `override_controller_extents` is enabled, configured X/Y/Z limits are used instead.
 
 Preview image improvements:
 
 - The renderer no longer auto-closes paths. If a shape is closed, that close line must come from parsed RD data.
 - Images are rendered oversized and downsampled for cleaner diagonal/vector lines.
-- The grid, point markers, bounds box, labels, line width, and colors can be changed from app options.
-- Preview metadata includes the active render options.
+- Preview metadata includes the active render behavior.
 
 Storage paths
 
@@ -430,7 +415,7 @@ Ruida Bridge can send real movement commands to a physical laser controller. Tre
 
 - Back up the current add-on folder before replacing files.
 - Save a copy of the current add-on configuration.
-- Confirm the configured maximum X and Y travel values match the machine.
+- Confirm the active X/Y/Z travel limits match the machine.
 - Remove material from the bed before movement testing.
 - Keep a hand near the emergency stop.
 - Test small jog movements before large movements.

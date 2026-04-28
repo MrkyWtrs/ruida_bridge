@@ -22,18 +22,18 @@ map:
     read_only: false
 
 options:
+  override_controller_extents: false
   mqtt_host: "core-mosquitto"
   mqtt_user: ""
   mqtt_pass: ""
   ruida_ip: "0.0.0.0"
-  override_controller_extents: false
 
 schema:
-  override_controller_extents: bool
   mqtt_host: str
   mqtt_user: str?
   mqtt_pass: password?
   ruida_ip: str
+  override_controller_extents: bool
   ruida_max_x_mm: float?
   ruida_max_y_mm: float?
   ruida_max_z_mm: float?

@@ -981,13 +981,6 @@ h1 {
 }
 
 
-/* 0.7.2 fully remove preview fallback block */
-.preview-fallback,
-#previewFallback {
-  display: none !important;
-  visibility: hidden !important;
-  content: none !important;
-}
 /* 0.7.3 files list internal scroll fix */
 @media (min-width: 821px) {
   .app-shell {
@@ -1390,11 +1383,6 @@ h1 {
   }
 }
 
-/* 0.8.0 restored layout: machine under preview, actions in files, placeholder under jog */
-.placeholder-card {
-  min-height: 120px;
-  opacity: 0.55;
-}
 
 .files-actions {
   flex: 0 0 auto;
@@ -1428,12 +1416,6 @@ h1 {
   }
 }
 
-/* 0.8.0 placeholder height sync support */
-@media (min-width: 1101px) {
-  .placeholder-card {
-    min-height: 0 !important;
-  }
-}
 
 /* 0.8.0 align placeholder top with machine info */
 @media (min-width: 1101px) {
@@ -1601,8 +1583,7 @@ h1 {
     align-content: start !important;
   }
 
-  .machine-card,
-  .placeholder-card {
+  .machine-card {
     align-self: start !important;
   }
 }
@@ -1654,7 +1635,6 @@ h1 {
   .preview-card,
   .axis-controls,
   .machine-card,
-  .placeholder-card,
   .files-card {
     height: auto !important;
     min-height: 0 !important;
@@ -2401,7 +2381,7 @@ body::-webkit-scrollbar-corner {
 
 
 
-/* 0.8.x final XY pad scale: temporary visible test scale */
+/* Final XY pad desktop scale */
 @media (min-width: 1101px) {
   .axis-controls .xy-card .jog-combined .xy-pad {
     transform: translateX(2mm) scale(0.90) !important;
