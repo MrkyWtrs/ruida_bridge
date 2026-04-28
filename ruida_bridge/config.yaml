@@ -49,11 +49,3 @@ schema:
   device_id: str?
   device_name: str?
   entity_prefix: str?
-  preview_fit_mode: list(geometry|bed)?
-  preview_show_grid: bool?
-  preview_show_points: bool?
-  preview_show_bounds: bool?
-  preview_show_labels: bool?
-  preview_line_width: int(1,20)?
-  preview_background: str?
-  preview_foreground: str?

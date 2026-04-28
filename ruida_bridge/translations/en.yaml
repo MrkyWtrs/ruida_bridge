@@ -35,19 +35,3 @@ configuration:
     name: Device Name
   entity_prefix:
     name: Entity Prefix
-  preview_fit_mode:
-    name: Preview Fit Mode
-  preview_show_grid:
-    name: Preview Show Grid
-  preview_show_points:
-    name: Preview Show Points
-  preview_show_bounds:
-    name: Preview Show Bounds
-  preview_show_labels:
-    name: Preview Show Labels
-  preview_line_width:
-    name: Preview Line Width
-  preview_background:
-    name: Preview Background
-  preview_foreground:
-    name: Preview Foreground
