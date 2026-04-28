@@ -39,6 +39,71 @@ let setupWarningDismissed = localStorage.getItem('ruidaSetupWarningDismissed') =
 let currentRotaryDiameter = null;
 let latestMovePosition = { x: null, y: null, z: null };
 let currentPreviewFitMode = normalizePreviewFitMode(localStorage.getItem('ruidaPreviewFitMode') || 'geometry');
+let currentMoveBounds = { xMax: null, yMax: null, zMax: null };
+
+function getFiniteStateNumber(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? number : null;
+}
+
+function getMoveBoundsFromState(data) {
+  const settings = data?.attributes?.settings || {};
+  const axis = data?.axis || {};
+
+  const xMax = getFiniteStateNumber(axis?.x?.max_travel_mm ?? settings.x_max_travel);
+  const yMax = getFiniteStateNumber(axis?.y?.max_travel_mm ?? settings.y_max_travel);
+  const zMax = getFiniteStateNumber(axis?.z?.max_travel_mm ?? settings.z_max_travel);
+
+  currentMoveBounds = {
+    xMax: xMax && xMax > 0 ? xMax : null,
+    yMax: yMax && yMax > 0 ? yMax : null,
+    zMax: zMax && zMax > 0 ? zMax : null,
+  };
+}
+
+function validateMoveTargetBounds(x, y, z, xChanged, yChanged, zChanged) {
+  const errors = [];
+
+  if (xChanged && x !== null && x < 0) {
+    errors.push(`X target ${x.toFixed(2)} mm is below 0.`);
+  }
+
+  if (yChanged && y !== null && y < 0) {
+    errors.push(`Y target ${y.toFixed(2)} mm is below 0.`);
+  }
+
+  if (zChanged && z !== null && z < 0) {
+    errors.push(`Z target ${z.toFixed(2)} mm is below 0.`);
+  }
+
+  if (xChanged && x !== null && currentMoveBounds.xMax !== null && x > currentMoveBounds.xMax) {
+    errors.push(`X target ${x.toFixed(2)} mm exceeds X bed limit ${currentMoveBounds.xMax.toFixed(2)} mm.`);
+  }
+
+  if (yChanged && y !== null && currentMoveBounds.yMax !== null && y > currentMoveBounds.yMax) {
+    errors.push(`Y target ${y.toFixed(2)} mm exceeds Y bed limit ${currentMoveBounds.yMax.toFixed(2)} mm.`);
+  }
+
+  if (zChanged && z !== null && currentMoveBounds.zMax !== null && z > currentMoveBounds.zMax) {
+    errors.push(`Z target ${z.toFixed(2)} mm exceeds Z travel limit ${currentMoveBounds.zMax.toFixed(2)} mm.`);
+  }
+
+  if (errors.length > 0) {
+    const message = `Move blocked. Target is outside the configured machine limits.\n\n${errors.join('\n')}`;
+    window.alert(message);
+    showResult({
+      ok: false,
+      cmd: 'move_to_position',
+      error: 'target_out_of_bounds',
+      details: errors,
+      bounds: currentMoveBounds,
+    }, true);
+    return false;
+  }
+
+  return true;
+}
+
 
 function formatNumber(value, digits = 2) {
   if (value === null || value === undefined || Number.isNaN(Number(value))) return 'unknown';
@@ -267,6 +332,10 @@ async function moveToEnteredPosition() {
 
   if (!xChanged && !yChanged && !zChanged) {
     showResult({ ok: true, cmd: 'move_to_position', skipped: true, reason: 'already_at_requested_position' });
+    return;
+  }
+
+  if (!validateMoveTargetBounds(x, y, z, xChanged, yChanged, zChanged)) {
     return;
   }
 
@@ -671,6 +740,7 @@ async function loadState() {
   setBadge(data.bridge || 'unknown');
 
   versionPill.textContent = data.app_version ? `v${data.app_version}` : 'v—';
+  getMoveBoundsFromState(data);
   updateSetupWarning(data.config_status);
   machineState.textContent = data.attributes?.status_text || 'unknown';
 
@@ -916,3 +986,61 @@ previewImage.addEventListener('error', () => previewFrame.classList.remove('has-
 loadState();
 setInterval(loadState, 2000);
 setInterval(() => refreshPreviewImage(false), 12000);
+
+
+/* 0.9.1 run selected controller slot + stop job */
+async function runSelectedControllerFile() {
+  if (!selectedFile) {
+    window.alert('No controller file is selected. Click Get Files, then select a controller file before using Run Selected.');
+    showResult({
+      ok: false,
+      cmd: 'run_file_slot',
+      error: 'no_file_selected',
+    }, true);
+    return;
+  }
+
+  if (selectedFile.slot === null || selectedFile.slot === undefined || selectedFile.source === 'local') {
+    window.alert('This file is local only and cannot be started from the controller yet. Use Run Selected only with files listed from the controller slots.');
+    showResult({
+      ok: false,
+      cmd: 'run_file_slot',
+      error: 'selected_file_has_no_controller_slot',
+      file: selectedFile.name || '',
+      source: selectedFile.source || 'unknown',
+    }, true);
+    return;
+  }
+
+  const slot = Number(selectedFile.slot);
+  if (!Number.isInteger(slot) || slot < 1 || slot > 255) {
+    showResult({
+      ok: false,
+      cmd: 'run_file_slot',
+      slot,
+      error: 'invalid_controller_slot',
+    }, true);
+    return;
+  }
+
+  await postCommand({
+    cmd: 'run_file_slot',
+    slot,
+    name: selectedFile.name || '',
+  });
+}
+
+async function stopCurrentJob() {
+  await postCommand({ cmd: 'stop' });
+}
+
+const runSelectedFileButton = document.getElementById('runSelectedFile');
+if (runSelectedFileButton) {
+  runSelectedFileButton.addEventListener('click', runSelectedControllerFile);
+}
+
+const stopJobButton = document.getElementById('stopJob');
+if (stopJobButton) {
+  stopJobButton.addEventListener('click', stopCurrentJob);
+}
+

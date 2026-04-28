@@ -1,5 +1,17 @@
+## 0.9.1
+
+- Added config-only controller extent override behavior.
+- By default, active X/Y/Z travel limits come from controller-reported machine settings.
+- Added `override_controller_extents` so users can force configured X/Y/Z travel limits only when needed.
+- Kept the override out of the dashboard/frontend.
+
+- Added Run Selected and Stop job controls for controller-slot jobs.
+
+- Added popup guards for local-only file run attempts and out-of-bounds Move To Position requests.
+
 ## 0.9.0
 
+- Removed the configurable Go To Z maximum single-move limit.
 - Marked the continuous jog work as the 0.9.0 checkpoint.
 - Converted dashboard XY jog buttons to press-and-hold continuous jog.
 - Converted dashboard Z Up and Z Down to RDWorks-style continuous jog packets.
@@ -33,8 +45,6 @@
 
 - Marked the current Go To Z work as the 0.8.5 checkpoint.
 - Added guarded backend `go_to_z` command support using the controller-reported Z position and known relative Z movement packets.
-- Added `go_to_z_max_delta_mm` to limit the maximum single Go To Z movement.
-- Added `go_to_z_allow_out_of_range` for explicit advanced testing on non-standard Z setups.
 - Added web API pass-through for `go_to_z`.
 - Enabled the dashboard Z input in Move To Position.
 - Updated the Move button so changed X/Y values queue `abs_xy` and changed Z values queue `go_to_z`.

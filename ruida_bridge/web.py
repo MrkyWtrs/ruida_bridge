@@ -32,6 +32,8 @@ WEB_PORT = int(os.environ.get("RUIDA_WEB_PORT", "8099"))
 RUIDA_IP = os.environ.get("RUIDA_IP", "")
 RUIDA_MAX_X_MM = os.environ.get("RUIDA_MAX_X_MM", "")
 RUIDA_MAX_Y_MM = os.environ.get("RUIDA_MAX_Y_MM", "")
+RUIDA_MAX_Z_MM = os.environ.get("RUIDA_MAX_Z_MM", "")
+RUIDA_OVERRIDE_CONTROLLER_EXTENTS = str(os.environ.get("RUIDA_OVERRIDE_CONTROLLER_EXTENTS", "false")).strip().lower() in ("1", "true", "yes", "on", "enable", "enabled")
 
 CMD_TOPIC = f"{MQTT_TOPIC_PREFIX}/bridge/cmd"
 STATE_TOPIC = f"{MQTT_TOPIC_PREFIX}/bridge/status"
@@ -161,10 +163,13 @@ def get_config_status():
         missing.append("Ruida controller IP")
     if RUIDA_IP.strip() in {"0.0.0.0", "127.0.0.1", "localhost"}:
         missing.append("Ruida controller IP still appears to be a default/test value")
-    if not positive_float(RUIDA_MAX_X_MM):
-        missing.append("maximum X travel must be greater than 0")
-    if not positive_float(RUIDA_MAX_Y_MM):
-        missing.append("maximum Y travel must be greater than 0")
+    if RUIDA_OVERRIDE_CONTROLLER_EXTENTS:
+        if not positive_float(RUIDA_MAX_X_MM):
+            missing.append("maximum X travel must be greater than 0 when controller extents are overridden")
+        if not positive_float(RUIDA_MAX_Y_MM):
+            missing.append("maximum Y travel must be greater than 0 when controller extents are overridden")
+        if not positive_float(RUIDA_MAX_Z_MM):
+            missing.append("maximum Z travel must be greater than 0 when controller extents are overridden")
 
     return {
         "configured": len(missing) == 0,
@@ -218,6 +223,7 @@ def api_command():
         "down",
         "z_up",
         "z_down",
+        "z_home",
         "file_list",
         "sync_files",
     }
@@ -233,6 +239,17 @@ def api_command():
             return jsonify({"ok": False, "error": "unknown_jog_action", "cmd": cmd, "action": action}), 400
         publish_command({"cmd": cmd, "action": action})
         return jsonify({"ok": True, "queued": True, "cmd": cmd, "action": action})
+
+    if cmd == "run_file_slot":
+        slot = int(data.get("slot", 0))
+        if slot < 1 or slot > 255:
+            return jsonify({"ok": False, "error": "slot must be between 1 and 255", "cmd": cmd, "slot": slot}), 400
+        publish_command({"cmd": "run_file_slot", "slot": slot})
+        return jsonify({"ok": True, "queued": True, "cmd": cmd, "slot": slot})
+
+    if cmd == "stop":
+        publish_command({"cmd": "stop"})
+        return jsonify({"ok": True, "queued": True, "cmd": cmd})
 
     if cmd == "rel_xy":
         publish_command({"cmd": "rel_xy", "dx": float(data.get("dx", 0)), "dy": float(data.get("dy", 0))})

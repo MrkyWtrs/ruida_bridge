@@ -123,6 +123,7 @@
               <div class="z-inline">
                 <div class="z-stack">
                   <button class="large-action" type="button" data-action="z_up"><span>↑</span><strong>Z Up</strong></button>
+                  <button id="zHomeButton" class="large-action z-home-action" type="button" data-action="z_home"><span>⌂</span><strong>Z Home</strong></button>
                   <button class="large-action" type="button" data-action="z_down"><span>↓</span><strong>Z Down</strong></button>
                 </div>
               </div>
@@ -199,6 +200,8 @@
           <div class="files-footer">
             <button class="wide-button" type="button" data-action="file_list"><span>⇩</span>Get Files</button>
             <button id="useSelected" class="wide-button" type="button"><span>↻</span>Refresh</button>
+            <button id="runSelectedFile" class="wide-button run-selected-button" type="button"><span>▶</span>Run Selected</button>
+            <button id="stopJob" class="wide-button stop-job-button" type="button"><span>■</span>Stop</button>
           </div>
 
           <div class="files-path-row">
@@ -212,6 +215,6 @@
     </section>
   </main>
 
-  <script src="app.js?v=0.9.0-continuous-jog"></script>
+  <script src="app.js?v=0.9.1-controller-extents"></script>
 </body>
 </html>

@@ -23,14 +23,14 @@ export MQTT_CLIENT_ID="$(config_or_default 'mqtt_client_id' 'ruida-ha-bridge')"
 export HA_DISCOVERY_PREFIX="$(config_or_default 'ha_discovery_prefix' 'homeassistant')"
 
 export RUIDA_IP="$(config_or_default 'ruida_ip' '0.0.0.0')"
+export RUIDA_OVERRIDE_CONTROLLER_EXTENTS="$(config_or_default 'override_controller_extents' 'false')"
 export RUIDA_PORT="$(config_or_default 'ruida_port' '50200')"
 export RUIDA_LOCAL_PORT="$(config_or_default 'ruida_local_port' '40200')"
 export RUIDA_MAX_X_MM="$(config_or_default 'ruida_max_x_mm' '0')"
 export RUIDA_MAX_Y_MM="$(config_or_default 'ruida_max_y_mm' '0')"
+export RUIDA_MAX_Z_MM="$(config_or_default 'ruida_max_z_mm' '0')"
 export RUIDA_Z_BUTTON_STEP_MM="$(config_or_default 'ruida_z_button_step_mm' '1')"
 
-export RUIDA_GO_TO_Z_MAX_DELTA_MM="$(config_or_default 'go_to_z_max_delta_mm' '10')"
-export RUIDA_GO_TO_Z_ALLOW_OUT_OF_RANGE="$(config_or_default 'go_to_z_allow_out_of_range' 'false')"
 
 export RUIDA_DEVICE_ID="$(config_or_default 'device_id' 'ruida_bridge')"
 export RUIDA_DEVICE_NAME="$(config_or_default 'device_name' 'Ruida Bridge')"

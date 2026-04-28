@@ -118,6 +118,8 @@ HA_PREVIEW_FILE = HA_PREVIEW_DIR / "latest.png"
 HA_PREVIEW_URL = "/local/ruida_bridge/latest.png"
 MAX_X_MM = env_float("RUIDA_MAX_X_MM", 0)
 MAX_Y_MM = env_float("RUIDA_MAX_Y_MM", 0)
+MAX_Z_MM = env_float("RUIDA_MAX_Z_MM", 0)
+OVERRIDE_CONTROLLER_EXTENTS = env_bool("RUIDA_OVERRIDE_CONTROLLER_EXTENTS", False)
 
 PREVIEW_FIT_MODE = "geometry"
 PREVIEW_SHOW_GRID = False
@@ -155,8 +157,6 @@ HA_PREVIEW_URL = "/local/ruida_bridge/latest.png"
 
 
 Z_BUTTON_STEP_MM = env_int("RUIDA_Z_BUTTON_STEP_MM", 1)
-GO_TO_Z_MAX_DELTA_MM = env_float("RUIDA_GO_TO_Z_MAX_DELTA_MM", 10.0, 0.1, 100.0)
-GO_TO_Z_ALLOW_OUT_OF_RANGE = env_bool("RUIDA_GO_TO_Z_ALLOW_OUT_OF_RANGE", False)
 ROTARY_ENABLE_SETTING_ID = 0x0226
 rotary_enabled_state = None
 
@@ -192,10 +192,7 @@ MACHINE_SETTINGS = [
 ]
 
 HOME_COMMANDS = [
-    bytes.fromhex("c9020000060d20"),
-    bytes.fromhex("c6010000"),
-    bytes.fromhex("c6210000"),
-    bytes.fromhex("d0298989d9100000000000000000000000"),
+    bytes.fromhex("d82a"),
 ]
 
 LEFT_COMMANDS = [
@@ -269,6 +266,11 @@ BUTTON_META = {
         "name": "Jog Z Down",
         "unique_id": eid("jog_z_down"),
         "icon": "mdi:arrow-down-bold-box",
+    },
+    "z_home": {
+        "name": "Home Z Axis",
+        "unique_id": eid("home_z_axis"),
+        "icon": "mdi:home-import-outline",
     },
     "file_list": {
         "name": "Get File List",
@@ -405,6 +407,51 @@ def publish_preview(payload: dict) -> None:
 def publish_preview_image_file() -> None:
     if HA_PREVIEW_FILE.exists():
         client.publish(PREVIEW_IMAGE_TOPIC, HA_PREVIEW_FILE.read_bytes(), qos=1, retain=True)
+
+
+
+def apply_active_machine_extents(settings: dict) -> dict:
+    """Choose active machine travel extents.
+
+    Default: trust controller-reported X/Y/Z travel.
+    Override mode: use configured ruida_max_x_mm / ruida_max_y_mm / ruida_max_z_mm.
+    """
+    out = dict(settings or {})
+
+    controller = {
+        "x_max_mm": out.get("x_max_travel"),
+        "y_max_mm": out.get("y_max_travel"),
+        "z_max_mm": out.get("z_max_travel"),
+    }
+
+    configured = {
+        "x_max_mm": float(MAX_X_MM or 0),
+        "y_max_mm": float(MAX_Y_MM or 0),
+        "z_max_mm": float(MAX_Z_MM or 0),
+    }
+
+    if OVERRIDE_CONTROLLER_EXTENTS:
+        if configured["x_max_mm"] > 0:
+            out["x_max_travel"] = round(configured["x_max_mm"], 3)
+        if configured["y_max_mm"] > 0:
+            out["y_max_travel"] = round(configured["y_max_mm"], 3)
+        if configured["z_max_mm"] > 0:
+            out["z_max_travel"] = round(configured["z_max_mm"], 3)
+        source = "configured"
+    else:
+        source = "controller"
+
+    out["machine_extents"] = {
+        "source": source,
+        "override_enabled": bool(OVERRIDE_CONTROLLER_EXTENTS),
+        "x_max_mm": out.get("x_max_travel"),
+        "y_max_mm": out.get("y_max_travel"),
+        "z_max_mm": out.get("z_max_travel"),
+        "controller": controller,
+        "configured": configured,
+    }
+
+    return out
 
 
 def axis_payload(axis: str, position_mm, settings: dict, timestamp: int) -> dict:
@@ -605,17 +652,30 @@ def send_abs_z(target_z_mm: float) -> dict:
 
     target_z_mm = float(target_z_mm)
     current_z = float(current_z_mm)
-    z_max = cached_settings.get("z_max_travel")
+    z_max = float((cached_settings or {}).get("z_max_travel") or 0)
 
-    if not GO_TO_Z_ALLOW_OUT_OF_RANGE and target_z_mm < 0:
-        return {"ok": False, "error": "z_target_below_zero", "target_z_mm": target_z_mm}
+    if z_max <= 0:
+        return {
+            "ok": False,
+            "error": "z_max_travel_unavailable",
+            "target_z_mm": target_z_mm,
+            "override_controller_extents": bool(OVERRIDE_CONTROLLER_EXTENTS),
+        }
 
-    if not GO_TO_Z_ALLOW_OUT_OF_RANGE and z_max is not None and float(z_max) > 0 and target_z_mm > float(z_max):
+    if target_z_mm < 0:
+        return {
+            "ok": False,
+            "error": "z_target_below_zero",
+            "target_z_mm": target_z_mm,
+        }
+
+    if target_z_mm > z_max:
         return {
             "ok": False,
             "error": "z_target_above_max_travel",
             "target_z_mm": target_z_mm,
-            "z_max_travel_mm": float(z_max),
+            "z_max_travel_mm": round(z_max, 3),
+            "override_controller_extents": bool(OVERRIDE_CONTROLLER_EXTENTS),
         }
 
     delta_z = round(target_z_mm - current_z, 3)
@@ -631,16 +691,6 @@ def send_abs_z(target_z_mm: float) -> dict:
             "reason": "already_at_target",
         }
 
-    if abs(delta_z) > GO_TO_Z_MAX_DELTA_MM:
-        return {
-            "ok": False,
-            "error": "z_delta_exceeds_limit",
-            "target_z_mm": round(target_z_mm, 3),
-            "current_z_mm": round(current_z, 3),
-            "delta_z_mm": delta_z,
-            "max_delta_mm": GO_TO_Z_MAX_DELTA_MM,
-        }
-
     send_relative_axis("z", delta_z)
 
     return {
@@ -649,7 +699,8 @@ def send_abs_z(target_z_mm: float) -> dict:
         "target_z_mm": round(target_z_mm, 3),
         "start_z_mm": round(current_z, 3),
         "delta_z_mm": delta_z,
-        "max_delta_mm": GO_TO_Z_MAX_DELTA_MM,
+        "z_max_travel_mm": round(z_max, 3),
+        "override_controller_extents": bool(OVERRIDE_CONTROLLER_EXTENTS),
     }
 
 
@@ -2741,10 +2792,36 @@ def on_message(client, userdata, msg):
             publish_result(False, cmd="z_down", error=str(exc))
         return
 
+    if payload == "z_home":
+        try:
+            send_ruida_packet("0177d2a5")
+            publish_result(True, cmd="z_home", packet="0177d2a5")
+        except Exception as exc:
+            traceback.print_exc()
+            publish_result(False, cmd="z_home", error=str(exc))
+        return
+
     try:
         data = json.loads(raw_payload)
         if isinstance(data, dict):
             cmd = str(data.get("cmd", "")).strip().lower()
+
+            if cmd == "run_file_slot":
+                slot = int(data.get("slot", 0))
+                if slot < 1 or slot > 255:
+                    publish_result(False, cmd="run_file_slot", slot=slot, error="slot must be between 1 and 255")
+                    return
+
+                command_hex = "e80300" + format(slot, "02x")
+                send_ruida_command(command_hex)
+                publish_result(True, cmd="run_file_slot", slot=slot, command_hex=command_hex)
+                return
+
+            if cmd == "stop":
+                command_hex = "d801"
+                send_ruida_command(command_hex)
+                publish_result(True, cmd="stop", command_hex=command_hex)
+                return
 
             if cmd == "jog_start":
                 action = str(data.get("action", "")).strip().lower()
@@ -2756,6 +2833,11 @@ def on_message(client, userdata, msg):
                 action = str(data.get("action", "")).strip().lower()
                 send_continuous_jog(action, "stop")
                 publish_result(True, cmd="jog_stop", action=action)
+                return
+
+            if cmd == "z_home":
+                send_ruida_packet("0177d2a5")
+                publish_result(True, cmd="z_home", packet="0177d2a5")
                 return
 
             if cmd == "file_list":
@@ -3017,6 +3099,8 @@ while True:
                 reply = query_setting(sock, setting["id"])
                 raw = tail_u32(reply)
                 new_settings[setting["key"]] = setting_value_from_raw(setting, raw)
+
+            new_settings = apply_active_machine_extents(new_settings)
 
             cached_settings = new_settings
             settings_loaded = True

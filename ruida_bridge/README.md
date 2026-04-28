@@ -1,10 +1,10 @@
-# Ruida Bridge 0.9.0 Continuous Jog Checkpoint
+# Ruida Bridge 0.9.1 Controller Extents Checkpoint
 
 Ruida Bridge is a Home Assistant App/add-on that connects a Ruida laser controller to Home Assistant using MQTT discovery and a local web dashboard.
 
 ## Current baseline
 
-**Version:** 0.9.0 Continuous Jog Checkpoint
+**Version:** 0.9.1 Controller Extents Checkpoint
 
 Active frontend files are only in `static/`:
 
@@ -48,8 +48,10 @@ Typical options:
     ruida_ip: "0.0.0.0"
     ruida_port: 50200
     ruida_local_port: 40200
+    override_controller_extents: false
     ruida_max_x_mm: 0
     ruida_max_y_mm: 0
+    ruida_max_z_mm: 0
     ruida_z_button_step_mm: 1
 
 ## First startup checks
@@ -97,7 +99,7 @@ Before beta testing movement commands:
 - remove material from the bed
 - keep the lid open if appropriate for your machine safety workflow
 - keep a hand near the emergency stop
-- verify the configured maximum X and Y travel values
+- verify the active X/Y/Z travel limits
 - test jog buttons at a small step size first
 - confirm jog direction before using larger moves
 - do not run unattended tests

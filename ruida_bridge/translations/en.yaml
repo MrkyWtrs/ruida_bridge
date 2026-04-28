@@ -19,15 +19,16 @@ configuration:
     name: Ruida Controller Port
   ruida_local_port:
     name: Local UDP Port
+  override_controller_extents:
+    name: Override Controller Travel Limits
   ruida_max_x_mm:
     name: Maximum X Travel (mm)
   ruida_max_y_mm:
     name: Maximum Y Travel (mm)
+  ruida_max_z_mm:
+    name: Maximum Z Travel (mm)
   ruida_z_button_step_mm:
     name: Z Button Step (mm)
-  go_to_z_max_delta_mm:
-    name: Go To Z Max Single Move (mm)
-  go_to_z_allow_out_of_range:
     name: Go To Z Allow Out-of-Range Targets
   device_id:
     name: Device ID

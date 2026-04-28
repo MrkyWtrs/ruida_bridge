@@ -3611,3 +3611,101 @@ body::-webkit-scrollbar-corner {
   user-select: none !important;
   -webkit-touch-callout: none !important;
 }
+
+/* Smaller middle Z Home button so the three-button Z stack fits cleanly. */
+.z-stack #zHomeButton.z-home-action {
+  min-height: 64px;
+  height: 64px;
+  padding: 8px 10px;
+}
+
+.z-stack #zHomeButton.z-home-action span {
+  font-size: 18px;
+}
+
+.z-stack #zHomeButton.z-home-action strong {
+  font-size: 13px;
+}
+
+/* Fit Z Up / Z Home / Z Down cleanly in the jog control card. */
+.z-inline {
+  align-self: stretch;
+}
+
+.z-stack {
+  height: 100%;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.z-stack .large-action {
+  flex: 1 1 0;
+  min-height: 0;
+  height: auto;
+  padding: 8px 10px;
+}
+
+.z-stack .large-action span {
+  font-size: 20px;
+}
+
+.z-stack .large-action strong {
+  font-size: 13px;
+}
+
+.z-stack #zHomeButton.z-home-action {
+  flex: 0.85 1 0;
+  min-height: 0;
+  height: auto;
+}
+
+/* 0.9.0 Z Home three-button stack final override */
+@media (min-width: 1101px) {
+  .z-stack {
+    display: grid !important;
+    grid-template-rows: 1fr 0.72fr 1fr !important;
+    gap: 8px !important;
+    height: 100% !important;
+    min-height: 0 !important;
+  }
+
+  .z-stack .large-action {
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 6px 8px !important;
+    gap: 4px !important;
+  }
+
+  .z-stack #zHomeButton.z-home-action {
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 5px 8px !important;
+  }
+
+  .z-stack .large-action span {
+    font-size: 20px !important;
+  }
+
+  .z-stack .large-action strong {
+    font-size: 10px !important;
+    line-height: 1.05 !important;
+  }
+}
+
+
+/* 0.9.1 Run Selected / Stop job buttons */
+.run-selected-button {
+  border-color: rgba(56, 208, 121, 0.50) !important;
+}
+
+.run-selected-button span {
+  color: #75eba7 !important;
+}
+
+.stop-job-button {
+  border-color: rgba(255, 111, 97, 0.58) !important;
+}
+
+.stop-job-button span {
+  color: #ff9b91 !important;
+}

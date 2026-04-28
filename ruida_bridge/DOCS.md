@@ -4,7 +4,7 @@ Ruida Bridge is a Home Assistant app that exposes Ruida controller data and cont
 
 ## Current version
 
-Working baseline: **0.9.0 Continuous Jog Checkpoint**
+Working baseline: **0.9.1 Controller Extents Checkpoint**
 
 ## What it does
 
@@ -43,7 +43,7 @@ Working baseline: **0.9.0 Continuous Jog Checkpoint**
   - rotary enable/disable
   - saved file list refresh
   - RD preview rendering
-- Enforces configurable XY bounds before sending move commands
+- Uses controller-reported X/Y/Z travel limits by default, with optional config-only override limits
 - Publishes command results to `ruida/bridge/result`
 - Publishes saved file list data to `ruida/bridge/file_list`
 - Publishes RD preview metadata to `ruida/bridge/preview`
@@ -102,8 +102,10 @@ This app expects these values from the Home Assistant app configuration:
 - `ruida_ip`
 - `ruida_port`
 - `ruida_local_port`
+- `override_controller_extents`
 - `ruida_max_x_mm`
 - `ruida_max_y_mm`
+- `ruida_max_z_mm`
 - `ruida_z_button_step_mm`
 - `device_id`
 - `device_name`
@@ -392,7 +394,7 @@ Publishes bridge availability.
 Queues an automatic saved file list refresh.
 Begins polling controller position, status, rotary state, laser state, and cached settings.
 Notes
-XY moves are checked against configured max X/Y limits before being sent.
+XY and Go To Z moves are checked against active X/Y/Z travel limits before being sent.
 Z jog button step size is controlled by ruida_z_button_step_mm.
 Rotary diameter writes use the known-good LightBurn-style packet burst.
 Rotary enable writes preserve the current rotary diameter.
