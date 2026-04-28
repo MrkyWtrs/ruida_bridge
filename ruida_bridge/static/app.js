@@ -9,6 +9,10 @@ const leftRuler = document.getElementById('leftRuler');
 const bridgeBadge = document.getElementById('bridgeBadge');
 const machineState = document.getElementById('machineState');
 const positionState = document.getElementById('positionState');
+const moveToX = document.getElementById('moveToX');
+const moveToY = document.getElementById('moveToY');
+const moveToZ = document.getElementById('moveToZ');
+const moveToPosition = document.getElementById('moveToPosition');
 const rotaryState = document.getElementById('rotaryState');
 const rotaryToggle = document.getElementById('rotaryToggle');
 const rotaryDiameter = document.getElementById('rotaryDiameter');
@@ -33,6 +37,7 @@ let lastPreviewStamp = '';
 let userEditedPreviewPath = false;
 let setupWarningDismissed = localStorage.getItem('ruidaSetupWarningDismissed') === 'true';
 let currentRotaryDiameter = null;
+let latestMovePosition = { x: null, y: null, z: null };
 let currentPreviewFitMode = normalizePreviewFitMode(localStorage.getItem('ruidaPreviewFitMode') || 'geometry');
 
 function formatNumber(value, digits = 2) {
@@ -218,6 +223,76 @@ async function postCommand(payload) {
   return data;
 }
 
+
+
+function getFiniteInputNumber(inputEl) {
+  if (!inputEl) return null;
+  const value = Number(inputEl.value);
+  return Number.isFinite(value) ? value : null;
+}
+
+function syncMoveToInputs(x, y, z) {
+  const active = document.activeElement;
+
+  if (moveToX && active !== moveToX && moveToX.value === '' && Number.isFinite(Number(x))) {
+    moveToX.value = Number(x).toFixed(2);
+  }
+
+  if (moveToY && active !== moveToY && moveToY.value === '' && Number.isFinite(Number(y))) {
+    moveToY.value = Number(y).toFixed(2);
+  }
+
+  if (moveToZ && active !== moveToZ && moveToZ.value === '' && Number.isFinite(Number(z))) {
+    moveToZ.value = Number(z).toFixed(2);
+  }
+}
+
+async function moveToEnteredPosition() {
+  const x = getFiniteInputNumber(moveToX);
+  const y = getFiniteInputNumber(moveToY);
+  const z = getFiniteInputNumber(moveToZ);
+
+  const currentX = Number(latestMovePosition.x);
+  const currentY = Number(latestMovePosition.y);
+  const currentZ = Number(latestMovePosition.z);
+
+  const xChanged = x !== null && (!Number.isFinite(currentX) || Math.abs(x - currentX) >= 0.005);
+  const yChanged = y !== null && (!Number.isFinite(currentY) || Math.abs(y - currentY) >= 0.005);
+  const zChanged = z !== null && (!Number.isFinite(currentZ) || Math.abs(z - currentZ) >= 0.005);
+
+  if ((xChanged || yChanged) && (x === null || y === null)) {
+    showResult({ ok: false, error: 'x_y_required_for_absolute_move' }, true);
+    return;
+  }
+
+  if (!xChanged && !yChanged && !zChanged) {
+    showResult({ ok: true, cmd: 'move_to_position', skipped: true, reason: 'already_at_requested_position' });
+    return;
+  }
+
+  const queued = [];
+
+  if (xChanged || yChanged) {
+    queued.push(await postCommand({
+      cmd: 'abs_xy',
+      x,
+      y,
+    }));
+  }
+
+  if (zChanged) {
+    queued.push(await postCommand({
+      cmd: 'go_to_z',
+      z,
+    }));
+  }
+
+  showResult({ ok: true, cmd: 'move_to_position', queued });
+}
+
+if (moveToPosition) {
+  moveToPosition.addEventListener('click', moveToEnteredPosition);
+}
 
 function syncJogHeightToPreview() {
   const previewCard = document.querySelector('.preview-card');
@@ -453,8 +528,16 @@ function setRotaryDiameterControlsEnabled(enabled) {
 function updateRotarySetButtonState() {
   if (!setRotaryDiameter || !rotaryDiameter) return;
 
+  const diameterRow = rotaryDiameter.closest('.rotary-diameter-inline');
+
   if (setRotaryDiameter.disabled || rotaryDiameter.disabled) {
     setRotaryDiameter.classList.remove('synced', 'dirty');
+    setRotaryDiameter.hidden = true;
+    setRotaryDiameter.textContent = '';
+    if (diameterRow) {
+      diameterRow.classList.add('rotary-synced');
+      diameterRow.classList.remove('rotary-dirty');
+    }
     return;
   }
 
@@ -469,6 +552,13 @@ function updateRotarySetButtonState() {
 
   setRotaryDiameter.classList.toggle('synced', synced);
   setRotaryDiameter.classList.toggle('dirty', !synced);
+  setRotaryDiameter.hidden = synced;
+  setRotaryDiameter.textContent = synced ? '' : 'Set';
+
+  if (diameterRow) {
+    diameterRow.classList.toggle('rotary-synced', synced);
+    diameterRow.classList.toggle('rotary-dirty', !synced);
+  }
 
   if (Number.isFinite(machineValue)) {
     setRotaryDiameter.title = synced
@@ -588,11 +678,14 @@ async function loadState() {
   const y = data.axis?.y?.position_mm ?? data.attributes?.y_mm;
   const z = data.axis?.z?.position_mm ?? data.attributes?.z_mm;
 
+  latestMovePosition = { x, y, z };
+  syncMoveToInputs(x, y, z);
+
   if (positionState) {
     if (x !== undefined && y !== undefined && z !== undefined) {
-      positionState.innerHTML = `<span class="position-group"><span class="position-number">${formatNumber(x)}</span><span class="axis-label">x</span>,</span><span class="position-group"><span class="position-number">${formatNumber(y)}</span><span class="axis-label">y</span>,</span><span class="position-group"><span class="position-number">${formatNumber(z)}</span><span class="axis-label">z</span></span>`;
+      positionState.innerHTML = `<span class="position-group"><span class="axis-label">X</span><span class="position-number">${formatNumber(x)}</span></span><span class="position-group"><span class="axis-label">Y</span><span class="position-number">${formatNumber(y)}</span></span><span class="position-group"><span class="axis-label">Z</span><span class="position-number">${formatNumber(z)}</span></span>`;
     } else if (x !== undefined && y !== undefined) {
-      positionState.innerHTML = `<span class="position-group"><span class="position-number">${formatNumber(x)}</span><span class="axis-label">x</span>,</span><span class="position-group"><span class="position-number">${formatNumber(y)}</span><span class="axis-label">y</span>,</span><span class="position-group"><span class="position-number">unknown</span><span class="axis-label">z</span></span>`;
+      positionState.innerHTML = `<span class="position-group"><span class="axis-label">X</span><span class="position-number">${formatNumber(x)}</span></span><span class="position-group"><span class="axis-label">Y</span><span class="position-number">${formatNumber(y)}</span></span><span class="position-group"><span class="axis-label">Z</span><span class="position-number">unknown</span></span>`;
     } else {
       positionState.textContent = 'unknown';
     }
@@ -661,9 +754,98 @@ rdPath.addEventListener('input', () => {
   userEditedPreviewPath = true;
 });
 
-for (const button of document.querySelectorAll('[data-action]')) {
-  button.addEventListener('click', () => postCommand({ cmd: button.dataset.action }));
+const continuousJogActions = new Set(['left', 'right', 'up', 'down', 'z_up', 'z_down']);
+let activeContinuousJog = null;
+
+async function startContinuousJog(action, button, event) {
+  if (!continuousJogActions.has(action)) return;
+
+  if (activeContinuousJog && activeContinuousJog !== action) {
+    await stopContinuousJog(activeContinuousJog);
+  }
+
+  activeContinuousJog = action;
+
+  if (event?.pointerId !== undefined && button?.setPointerCapture) {
+    try {
+      button.setPointerCapture(event.pointerId);
+    } catch (error) {
+      // Pointer capture is best-effort only.
+    }
+  }
+
+  await postCommand({ cmd: 'jog_start', action });
 }
+
+async function stopContinuousJog(action = activeContinuousJog) {
+  if (!action) return;
+
+  if (activeContinuousJog !== action) {
+    return;
+  }
+
+  activeContinuousJog = null;
+  await postCommand({ cmd: 'jog_stop', action });
+}
+
+for (const button of document.querySelectorAll('[data-action]')) {
+  const action = button.dataset.action;
+
+  if (continuousJogActions.has(action)) {
+    button.addEventListener('touchstart', async (event) => {
+      event.preventDefault();
+      await startContinuousJog(action, button, event);
+    }, { passive: false });
+
+    button.addEventListener('touchend', async (event) => {
+      event.preventDefault();
+      await stopContinuousJog(action);
+    }, { passive: false });
+
+    button.addEventListener('touchcancel', async (event) => {
+      event.preventDefault();
+      await stopContinuousJog(action);
+    }, { passive: false });
+
+    button.addEventListener('pointerdown', async (event) => {
+      if (event.pointerType === 'touch') return;
+      event.preventDefault();
+      await startContinuousJog(action, button, event);
+    });
+
+    button.addEventListener('pointerup', async (event) => {
+      if (event.pointerType === 'touch') return;
+      event.preventDefault();
+      await stopContinuousJog(action);
+    });
+
+    button.addEventListener('pointercancel', async (event) => {
+      if (event.pointerType === 'touch') return;
+      event.preventDefault();
+      await stopContinuousJog(action);
+    });
+
+    button.addEventListener('lostpointercapture', async () => {
+      await stopContinuousJog(action);
+    });
+
+    button.addEventListener('contextmenu', (event) => {
+      event.preventDefault();
+    });
+
+    continue;
+  }
+
+  button.addEventListener('click', () => postCommand({ cmd: action }));
+}
+
+window.addEventListener('pointerup', async () => {
+  await stopContinuousJog();
+});
+
+window.addEventListener('blur', async () => {
+  await stopContinuousJog();
+});
 
 const refreshAll = document.getElementById('refreshAll');
 if (refreshAll) {

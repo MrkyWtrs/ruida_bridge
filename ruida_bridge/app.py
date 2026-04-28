@@ -27,6 +27,13 @@ def env_bool(name: str, default: bool = False) -> bool:
     return raw.strip().lower() in ("1", "true", "yes", "on", "enable", "enabled")
 
 
+def env_str(name: str, default: str) -> str:
+    raw = os.environ.get(name, default)
+    raw = str(raw).strip()
+    if raw == "" or raw.lower() in ("null", "none"):
+        return default
+    return raw
+
 def env_int(name: str, default: int, min_value: int | None = None, max_value: int | None = None) -> int:
     try:
         value = int(os.environ.get(name, str(default)))
@@ -74,17 +81,31 @@ def env_rgb(name: str, default: tuple[int, int, int]) -> tuple[int, int, int] | 
 def blend_rgb(a: tuple[int, int, int], b: tuple[int, int, int], b_weight: float) -> tuple[int, int, int]:
     a_weight = 1.0 - b_weight
     return tuple(max(0, min(255, int((av * a_weight) + (bv * b_weight)))) for av, bv in zip(a, b))
+def env_float(name: str, default: float, min_value: float | None = None, max_value: float | None = None) -> float:
+    raw = os.environ.get(name, str(default))
+    try:
+        value = float(str(raw).strip())
+    except Exception:
+        value = default
+
+    if min_value is not None:
+        value = max(min_value, value)
+    if max_value is not None:
+        value = min(max_value, value)
+
+    return value
+
 MQTT_HOST = os.environ["MQTT_HOST"]
-MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
+MQTT_PORT = env_int("MQTT_PORT", 1883)
 MQTT_USER = os.environ.get("MQTT_USER", "")
 MQTT_PASS = os.environ.get("MQTT_PASS", "")
-MQTT_TOPIC_PREFIX = os.environ.get("MQTT_TOPIC_PREFIX", "ruida")
+MQTT_TOPIC_PREFIX = env_str("MQTT_TOPIC_PREFIX", "ruida")
 CMD_TOPIC = f"{MQTT_TOPIC_PREFIX}/bridge/cmd"
 CLIENT_ID = os.environ.get("MQTT_CLIENT_ID", "ruida-ha-bridge")
 HA_DISCOVERY_PREFIX = os.environ.get("HA_DISCOVERY_PREFIX", "homeassistant")
 RUIDA_IP = os.environ.get("RUIDA_IP", "0.0.0.0")
-RUIDA_PORT = int(os.environ.get("RUIDA_PORT", "50200"))
-RUIDA_LOCAL_PORT = int(os.environ.get("RUIDA_LOCAL_PORT", "40200"))
+RUIDA_PORT = env_int("RUIDA_PORT", 50200)
+RUIDA_LOCAL_PORT = env_int("RUIDA_LOCAL_PORT", 40200)
 STATE_TOPIC = f"{MQTT_TOPIC_PREFIX}/bridge/status"
 ATTR_TOPIC = f"{MQTT_TOPIC_PREFIX}/bridge/attributes"
 RESULT_TOPIC = f"{MQTT_TOPIC_PREFIX}/bridge/result"
@@ -95,8 +116,8 @@ ARCHIVE_DIR = Path("/config/images")
 HA_PREVIEW_DIR = Path("/homeassistant/www/ruida_bridge")
 HA_PREVIEW_FILE = HA_PREVIEW_DIR / "latest.png"
 HA_PREVIEW_URL = "/local/ruida_bridge/latest.png"
-MAX_X_MM = float(os.environ.get("RUIDA_MAX_X_MM", "0"))
-MAX_Y_MM = float(os.environ.get("RUIDA_MAX_Y_MM", "0"))
+MAX_X_MM = env_float("RUIDA_MAX_X_MM", 0)
+MAX_Y_MM = env_float("RUIDA_MAX_Y_MM", 0)
 
 PREVIEW_FIT_MODE = env_choice("RUIDA_PREVIEW_FIT_MODE", "geometry", {"geometry", "bed"})
 PREVIEW_SHOW_GRID = env_bool("RUIDA_PREVIEW_SHOW_GRID", True)
@@ -133,7 +154,9 @@ HA_PREVIEW_FILE = HA_PREVIEW_DIR / "latest.png"
 HA_PREVIEW_URL = "/local/ruida_bridge/latest.png"
 
 
-Z_BUTTON_STEP_MM = int(os.environ.get("RUIDA_Z_BUTTON_STEP_MM", "1"))
+Z_BUTTON_STEP_MM = env_int("RUIDA_Z_BUTTON_STEP_MM", 1)
+GO_TO_Z_MAX_DELTA_MM = env_float("RUIDA_GO_TO_Z_MAX_DELTA_MM", 10.0, 0.1, 100.0)
+GO_TO_Z_ALLOW_OUT_OF_RANGE = env_bool("RUIDA_GO_TO_Z_ALLOW_OUT_OF_RANGE", False)
 ROTARY_ENABLE_SETTING_ID = 0x0226
 rotary_enabled_state = None
 
@@ -311,9 +334,44 @@ REL_PACKET_MAP = {
     },
 }
 
+
+CONTINUOUS_JOG_MAP = {
+    "left": {
+        "prep": "c9020000060d20",
+        "start": "d9d820",
+        "stop": "d9d830",
+    },
+    "right": {
+        "prep": "c9020000060d20",
+        "start": "d9d821",
+        "stop": "d9d831",
+    },
+    "up": {
+        "prep": "c9020000060d20",
+        "start": "d9d822",
+        "stop": "d9d832",
+    },
+    "down": {
+        "prep": "c9020000060d20",
+        "start": "d9d823",
+        "stop": "d9d833",
+    },
+    "z_up": {
+        "prep": "c9020000030650",
+        "start": "d824",
+        "stop": "d834",
+    },
+    "z_down": {
+        "prep": "c9020000030650",
+        "start": "d825",
+        "stop": "d835",
+    },
+}
+
 command_queue = SimpleQueue()
 current_x_mm = None
 current_y_mm = None
+current_z_mm = None
 cached_settings = {}
 settings_loaded = False
 
@@ -480,20 +538,50 @@ def send_ruida_packet(hex_payload: str) -> None:
         sock.sendto(payload, (RUIDA_IP, RUIDA_PORT))
 
 
+def send_ruida_command(command_hex: str) -> None:
+    command = bytes.fromhex(command_hex)
+    payload = build_udp_packet(command)
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+        sock.sendto(payload, (RUIDA_IP, RUIDA_PORT))
+
+
+def send_continuous_jog(action: str, phase: str) -> None:
+    action = str(action or "").strip().lower()
+    phase = str(phase or "").strip().lower()
+
+    if action not in CONTINUOUS_JOG_MAP:
+        raise ValueError(f"unsupported continuous jog action: {action}")
+
+    if phase not in ("start", "stop"):
+        raise ValueError(f"unsupported continuous jog phase: {phase}")
+
+    jog = CONTINUOUS_JOG_MAP[action]
+
+    if phase == "start":
+        send_ruida_command(jog["prep"])
+        time.sleep(0.10)
+
+        send_ruida_command(jog["start"])
+        return
+
+    send_ruida_command(jog["stop"])
+
+
 def send_relative_axis(axis: str, delta_mm: float) -> None:
     if axis not in REL_PACKET_MAP:
         raise ValueError(f"unsupported axis: {axis}")
 
     packet_set = REL_PACKET_MAP[axis]
+    packet_delay_s = 0.05 if axis == "z" else 0.2
 
     for step in (100, 5, 2, 1):
         while delta_mm >= step:
             send_ruida_packet(packet_set[step]["pos"])
-            time.sleep(0.2)
+            time.sleep(packet_delay_s)
             delta_mm -= step
         while delta_mm <= -step:
             send_ruida_packet(packet_set[step]["neg"])
-            time.sleep(0.2)
+            time.sleep(packet_delay_s)
             delta_mm += step
 
 
@@ -509,6 +597,60 @@ def send_z_button_move(direction: str) -> None:
         send_relative_axis("z", float(Z_BUTTON_STEP_MM))
     else:
         raise ValueError(f"unsupported Z button direction: {direction}")
+
+
+def send_abs_z(target_z_mm: float) -> dict:
+    if current_z_mm is None:
+        return {"ok": False, "error": "current_z_unknown"}
+
+    target_z_mm = float(target_z_mm)
+    current_z = float(current_z_mm)
+    z_max = cached_settings.get("z_max_travel")
+
+    if not GO_TO_Z_ALLOW_OUT_OF_RANGE and target_z_mm < 0:
+        return {"ok": False, "error": "z_target_below_zero", "target_z_mm": target_z_mm}
+
+    if not GO_TO_Z_ALLOW_OUT_OF_RANGE and z_max is not None and float(z_max) > 0 and target_z_mm > float(z_max):
+        return {
+            "ok": False,
+            "error": "z_target_above_max_travel",
+            "target_z_mm": target_z_mm,
+            "z_max_travel_mm": float(z_max),
+        }
+
+    delta_z = round(target_z_mm - current_z, 3)
+
+    if abs(delta_z) < 0.005:
+        return {
+            "ok": True,
+            "cmd": "go_to_z",
+            "target_z_mm": round(target_z_mm, 3),
+            "current_z_mm": round(current_z, 3),
+            "delta_z_mm": 0.0,
+            "skipped": True,
+            "reason": "already_at_target",
+        }
+
+    if abs(delta_z) > GO_TO_Z_MAX_DELTA_MM:
+        return {
+            "ok": False,
+            "error": "z_delta_exceeds_limit",
+            "target_z_mm": round(target_z_mm, 3),
+            "current_z_mm": round(current_z, 3),
+            "delta_z_mm": delta_z,
+            "max_delta_mm": GO_TO_Z_MAX_DELTA_MM,
+        }
+
+    send_relative_axis("z", delta_z)
+
+    return {
+        "ok": True,
+        "cmd": "go_to_z",
+        "target_z_mm": round(target_z_mm, 3),
+        "start_z_mm": round(current_z, 3),
+        "delta_z_mm": delta_z,
+        "max_delta_mm": GO_TO_Z_MAX_DELTA_MM,
+    }
 
 
 def encode_ruida_u35(value: int) -> bytes:
@@ -2559,7 +2701,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
 
 
 def on_message(client, userdata, msg):
-    global current_x_mm, current_y_mm
+    global current_x_mm, current_y_mm, current_z_mm
 
     try:
         raw_payload = msg.payload.decode("utf-8").strip()
@@ -2603,6 +2745,18 @@ def on_message(client, userdata, msg):
         data = json.loads(raw_payload)
         if isinstance(data, dict):
             cmd = str(data.get("cmd", "")).strip().lower()
+
+            if cmd == "jog_start":
+                action = str(data.get("action", "")).strip().lower()
+                send_continuous_jog(action, "start")
+                publish_result(True, cmd="jog_start", action=action)
+                return
+
+            if cmd == "jog_stop":
+                action = str(data.get("action", "")).strip().lower()
+                send_continuous_jog(action, "stop")
+                publish_result(True, cmd="jog_stop", action=action)
+                return
 
             if cmd == "file_list":
                 command_queue.put("sync_files")
@@ -2680,6 +2834,11 @@ def on_message(client, userdata, msg):
 
                 send_abs_xy(x_mm, y_mm)
                 publish_result(True, cmd="abs_xy", x=x_mm, y=y_mm)
+                return
+
+            if cmd == "go_to_z":
+                result = send_abs_z(float(data["z"]))
+                publish_result(bool(result.get("ok")), **{k: v for k, v in result.items() if k != "ok"})
                 return
 
             if cmd == "set_rotary_diameter":
@@ -2844,6 +3003,7 @@ while True:
 
         current_x_mm = payload["x_mm"]
         current_y_mm = payload["y_mm"]
+        current_z_mm = payload.get("z_mm")
         payload["status_raw"] = tail_u32(status_reply)
         payload["status_byte_1"] = status_reply[-2]
         payload["status_byte_2"] = status_reply[-1]

@@ -1,3 +1,46 @@
+## 0.9.0
+
+- Marked the continuous jog work as the 0.9.0 checkpoint.
+- Converted dashboard XY jog buttons to press-and-hold continuous jog.
+- Converted dashboard Z Up and Z Down to RDWorks-style continuous jog packets.
+- Fixed duplicate jog_stop events from pointer capture release.
+- Added mobile touch handling so phone browsers hold jog buttons correctly.
+- Kept absolute XY as the existing one-packet smooth absolute target move.
+- Kept Go To Z guarded and accurate using the existing relative Z movement path.
+- Removed temporary Ruida UDP packet debug logging.
+
+## 0.8.9
+
+- Forced the Machine Info panel into four stable rows during window resizing.
+- Prevented Machine Status/Current Position and Move To Position/Rotary from sharing rows at intermediate widths.
+
+## 0.8.7
+
+- Continued configuration screen cleanup.
+- Removed duplicate local backup add-on folders from `/addons` so Supervisor only sees the live Ruida Bridge package.
+- Converted advanced configuration fields toward optional/hidden behavior for Home Assistant's optional configuration UI.
+- Kept runtime defaults in `run.sh` so hidden advanced options still have safe defaults.
+
+## 0.8.6
+
+- Marked the configuration cleanup work as the 0.8.6 checkpoint.
+- Kept only beginner setup fields visible by default in add-on options.
+- Moved advanced options behind Home Assistant's optional configuration toggle.
+- Added run.sh fallback defaults for hidden optional settings.
+- Kept backend, frontend, movement, file, preview, rotary, and discovery behavior unchanged from 0.8.5.
+
+## 0.8.5
+
+- Marked the current Go To Z work as the 0.8.5 checkpoint.
+- Added guarded backend `go_to_z` command support using the controller-reported Z position and known relative Z movement packets.
+- Added `go_to_z_max_delta_mm` to limit the maximum single Go To Z movement.
+- Added `go_to_z_allow_out_of_range` for explicit advanced testing on non-standard Z setups.
+- Added web API pass-through for `go_to_z`.
+- Enabled the dashboard Z input in Move To Position.
+- Updated the Move button so changed X/Y values queue `abs_xy` and changed Z values queue `go_to_z`.
+- Confirmed test movement from Z 3002.0 to 3050.0 completed successfully.
+- Kept existing XY, rotary, preview, file, and discovery behavior unchanged from 0.8.4.
+
 ## 0.8.4
 
 - Added root-level `icon.png` and `logo.png` so Supervisor recognizes Ruida Bridge add-on artwork.
@@ -100,8 +143,8 @@
 - Changed controller download block requests to encode block numbers as Ruida/u35 base-128 values
 - Confirmed block 128 now requests as `00 00 00 01 00` instead of the failing raw `00 00 00 00 80`
 - Raised maximum controller download block limit from 256 to 1024
-- Confirmed large controller files download fully
-- Confirmed a large downloaded file now renders completely instead of stopping at the first partial section
+- Confirmed RICK downloads fully as `RICK.rd`
+- Confirmed RICK render now completes instead of stopping at the first partial section
 - Removed temporary `probe_download_blocks` diagnostic command after confirming the fix
 
 ## 0.7.5
@@ -120,7 +163,7 @@
   - Keeps scan-heavy parser branch for 0xAA/0x8A-heavy files
   - Keeps detected scan Y interval for row cleanup instead of assuming fixed row spacing
   - Keeps diagonal transition artifact filtering in scan/fill cleanup
-- Confirmed representative fill/scan downloaded files now preview correctly after the download boundary fix
+- Confirmed FILL2 and CUBE-style downloaded files now preview correctly after the download boundary fix
 - Known limitation:
   - One remaining file still has preview/render issues and needs separate investigation
 

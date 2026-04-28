@@ -2,14 +2,9 @@
 
 Ruida Bridge is a Home Assistant app that exposes Ruida controller data and control functions to Home Assistant using MQTT.
 
-## Security and safety warning
-
-Ruida Bridge is intended only for trusted local Home Assistant environments. Do not expose the Ingress UI, MQTT broker, or add-on network access to untrusted users or the public internet. The bridge can send real movement commands to a physical laser controller.
-
-
 ## Current version
 
-Working baseline: **0.8.4 Add-on Artwork Metadata Checkpoint**
+Working baseline: **0.9.0 Continuous Jog Checkpoint**
 
 ## What it does
 

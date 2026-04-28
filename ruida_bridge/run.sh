@@ -1,29 +1,50 @@
 #!/usr/bin/with-contenv bashio
 
-export MQTT_HOST="$(bashio::config 'mqtt_host')"
-export MQTT_PORT="$(bashio::config 'mqtt_port')"
-export MQTT_USER="$(bashio::config 'mqtt_user')"
-export MQTT_PASS="$(bashio::config 'mqtt_pass')"
-export MQTT_TOPIC_PREFIX="$(bashio::config 'mqtt_topic_prefix')"
-export MQTT_CLIENT_ID="$(bashio::config 'mqtt_client_id')"
-export HA_DISCOVERY_PREFIX="$(bashio::config 'ha_discovery_prefix')"
-export RUIDA_IP="$(bashio::config 'ruida_ip')"
-export RUIDA_PORT="$(bashio::config 'ruida_port')"
-export RUIDA_LOCAL_PORT="$(bashio::config 'ruida_local_port')"
-export RUIDA_MAX_X_MM="$(bashio::config 'ruida_max_x_mm')"
-export RUIDA_MAX_Y_MM="$(bashio::config 'ruida_max_y_mm')"
-export RUIDA_Z_BUTTON_STEP_MM="$(bashio::config 'ruida_z_button_step_mm')"
-export RUIDA_DEVICE_ID="$(bashio::config 'device_id')"
-export RUIDA_DEVICE_NAME="$(bashio::config 'device_name')"
-export RUIDA_ENTITY_PREFIX="$(bashio::config 'entity_prefix')"
-export RUIDA_PREVIEW_FIT_MODE="$(bashio::config 'preview_fit_mode')"
-export RUIDA_PREVIEW_SHOW_GRID="$(bashio::config 'preview_show_grid')"
-export RUIDA_PREVIEW_SHOW_POINTS="$(bashio::config 'preview_show_points')"
-export RUIDA_PREVIEW_SHOW_BOUNDS="$(bashio::config 'preview_show_bounds')"
-export RUIDA_PREVIEW_SHOW_LABELS="$(bashio::config 'preview_show_labels')"
-export RUIDA_PREVIEW_LINE_WIDTH="$(bashio::config 'preview_line_width')"
-export RUIDA_PREVIEW_BACKGROUND="$(bashio::config 'preview_background')"
-export RUIDA_PREVIEW_FOREGROUND="$(bashio::config 'preview_foreground')"
+config_or_default() {
+  local key="$1"
+  local default="$2"
+  local value
+
+  value="$(bashio::config "$key" 2>/dev/null || true)"
+
+  if [ -z "$value" ]; then
+    echo "$default"
+  else
+    echo "$value"
+  fi
+}
+
+export MQTT_HOST="$(config_or_default 'mqtt_host' 'core-mosquitto')"
+export MQTT_PORT="$(config_or_default 'mqtt_port' '1883')"
+export MQTT_USER="$(config_or_default 'mqtt_user' '')"
+export MQTT_PASS="$(config_or_default 'mqtt_pass' '')"
+export MQTT_TOPIC_PREFIX="$(config_or_default 'mqtt_topic_prefix' 'ruida')"
+export MQTT_CLIENT_ID="$(config_or_default 'mqtt_client_id' 'ruida-ha-bridge')"
+export HA_DISCOVERY_PREFIX="$(config_or_default 'ha_discovery_prefix' 'homeassistant')"
+
+export RUIDA_IP="$(config_or_default 'ruida_ip' '0.0.0.0')"
+export RUIDA_PORT="$(config_or_default 'ruida_port' '50200')"
+export RUIDA_LOCAL_PORT="$(config_or_default 'ruida_local_port' '40200')"
+export RUIDA_MAX_X_MM="$(config_or_default 'ruida_max_x_mm' '0')"
+export RUIDA_MAX_Y_MM="$(config_or_default 'ruida_max_y_mm' '0')"
+export RUIDA_Z_BUTTON_STEP_MM="$(config_or_default 'ruida_z_button_step_mm' '1')"
+
+export RUIDA_GO_TO_Z_MAX_DELTA_MM="$(config_or_default 'go_to_z_max_delta_mm' '10')"
+export RUIDA_GO_TO_Z_ALLOW_OUT_OF_RANGE="$(config_or_default 'go_to_z_allow_out_of_range' 'false')"
+
+export RUIDA_DEVICE_ID="$(config_or_default 'device_id' 'ruida_bridge')"
+export RUIDA_DEVICE_NAME="$(config_or_default 'device_name' 'Ruida Bridge')"
+export RUIDA_ENTITY_PREFIX="$(config_or_default 'entity_prefix' 'ruida')"
+
+export RUIDA_PREVIEW_FIT_MODE="$(config_or_default 'preview_fit_mode' 'geometry')"
+export RUIDA_PREVIEW_SHOW_GRID="$(config_or_default 'preview_show_grid' 'false')"
+export RUIDA_PREVIEW_SHOW_POINTS="$(config_or_default 'preview_show_points' 'false')"
+export RUIDA_PREVIEW_SHOW_BOUNDS="$(config_or_default 'preview_show_bounds' 'false')"
+export RUIDA_PREVIEW_SHOW_LABELS="$(config_or_default 'preview_show_labels' 'false')"
+export RUIDA_PREVIEW_LINE_WIDTH="$(config_or_default 'preview_line_width' '2')"
+export RUIDA_PREVIEW_BACKGROUND="$(config_or_default 'preview_background' 'transparent')"
+export RUIDA_PREVIEW_FOREGROUND="$(config_or_default 'preview_foreground' 'white')"
+
 export RUIDA_WEB_PORT="8099"
 export RUIDA_APP_VERSION="$(bashio::addon.version)"
 

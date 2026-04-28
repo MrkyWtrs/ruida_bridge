@@ -1,5 +1,20 @@
 import json
 import os
+
+def env_str(name: str, default: str) -> str:
+    raw = os.environ.get(name, default)
+    raw = str(raw).strip()
+    if raw == "" or raw.lower() in ("null", "none"):
+        return default
+    return raw
+
+def env_int(name: str, default: int) -> int:
+    raw = os.environ.get(name, str(default))
+    raw = str(raw).strip()
+    if raw == "" or raw.lower() in ("null", "none"):
+        return int(default)
+    return int(raw)
+
 import time
 from threading import Lock
 
@@ -8,10 +23,10 @@ from flask import Flask, jsonify, request, send_from_directory
 
 APP_VERSION = os.environ.get("RUIDA_APP_VERSION", "unknown")
 MQTT_HOST = os.environ["MQTT_HOST"]
-MQTT_PORT = int(os.environ.get("MQTT_PORT", "1883"))
+MQTT_PORT = env_int("MQTT_PORT", 1883)
 MQTT_USER = os.environ.get("MQTT_USER", "")
 MQTT_PASS = os.environ.get("MQTT_PASS", "")
-MQTT_TOPIC_PREFIX = os.environ.get("MQTT_TOPIC_PREFIX", "ruida")
+MQTT_TOPIC_PREFIX = env_str("MQTT_TOPIC_PREFIX", "ruida")
 CLIENT_ID = os.environ.get("MQTT_CLIENT_ID", "ruida-ha-bridge") + "-web"
 WEB_PORT = int(os.environ.get("RUIDA_WEB_PORT", "8099"))
 RUIDA_IP = os.environ.get("RUIDA_IP", "")
@@ -211,6 +226,14 @@ def api_command():
         publish_command(cmd)
         return jsonify({"ok": True, "queued": True, "cmd": cmd})
 
+    if cmd in ("jog_start", "jog_stop"):
+        action = str(data.get("action", "")).strip().lower()
+        valid_actions = {"left", "right", "up", "down", "z_up", "z_down"}
+        if action not in valid_actions:
+            return jsonify({"ok": False, "error": "unknown_jog_action", "cmd": cmd, "action": action}), 400
+        publish_command({"cmd": cmd, "action": action})
+        return jsonify({"ok": True, "queued": True, "cmd": cmd, "action": action})
+
     if cmd == "rel_xy":
         publish_command({"cmd": "rel_xy", "dx": float(data.get("dx", 0)), "dy": float(data.get("dy", 0))})
         return jsonify({"ok": True, "queued": True, "cmd": cmd})
@@ -218,6 +241,10 @@ def api_command():
     if cmd == "abs_xy":
         publish_command({"cmd": "abs_xy", "x": float(data["x"]), "y": float(data["y"])})
         return jsonify({"ok": True, "queued": True, "cmd": cmd})
+
+    if cmd == "go_to_z":
+        publish_command({"cmd": "go_to_z", "z": float(data["z"])})
+        return jsonify({"ok": True, "queued": True, "cmd": cmd, "z": float(data["z"])})
 
     if cmd == "download_file":
         publish_command({"cmd": "download_file", "slot": int(data["slot"]), "name": str(data.get("name", ""))})

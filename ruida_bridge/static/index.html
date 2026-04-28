@@ -132,14 +132,34 @@
 
         <section class="card machine-card">
                   <div>
-                    <div class="card-title"><span>◆</span><h2>Machine Info</h2></div>
+                    <div class="card-title machine-info-title"><span>◆</span><h2>Machine Info</h2></div>
         
                     <div class="machine-info">
-                      <div><span>Status</span><strong id="machineState">unknown</strong></div>
-                      <div>
-                        <span>Position</span>
-                        <strong id="positionState" class="position-value">unknown</strong>
+                      <div><span>Machine Status</span><strong id="machineState">unknown</strong></div>
+                      <div class="current-position-row">
+                        <span>Current Position</span>
+                        <strong id="positionState" class="position-value position-value-grid">unknown</strong>
                       </div>
+
+                      <div class="move-to-row">
+                        <span>Move To Position</span>
+                        <div class="move-to-controls">
+                          <label>
+                            <span>X</span>
+                            <input id="moveToX" class="move-to-input" type="number" min="0" step="0.01" placeholder="X mm">
+                          </label>
+                          <label>
+                            <span>Y</span>
+                            <input id="moveToY" class="move-to-input" type="number" min="0" step="0.01" placeholder="Y mm">
+                          </label>
+                          <label>
+                            <span>Z</span>
+                            <input id="moveToZ" class="move-to-input" type="number" min="0" step="0.01" placeholder="Z mm" title="Go to Z position">
+                          </label>
+                          <button id="moveToPosition" class="mini-button move-to-button" type="button">Move</button>
+                        </div>
+                      </div>
+
                       <div class="rotary-inline-row">
                         <div class="rotary-inline-labels">
                           <span class="rotary-left-label">Rotary</span>
@@ -192,6 +212,6 @@
     </section>
   </main>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=0.9.0-continuous-jog"></script>
 </body>
 </html>

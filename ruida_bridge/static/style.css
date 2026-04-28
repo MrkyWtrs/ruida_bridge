@@ -2408,3 +2408,1206 @@ body::-webkit-scrollbar-corner {
     transform-origin: center center !important;
   }
 }
+
+
+/* 0.8.4 Move XY inputs in Machine Info */
+.move-to-row {
+  padding-top: 12px !important;
+}
+
+.move-to-controls {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto !important;
+  gap: 8px !important;
+  align-items: end !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.move-to-controls label {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 4px !important;
+  min-width: 0 !important;
+}
+
+.move-to-controls label > span {
+  display: block !important;
+  margin: 0 !important;
+  color: var(--line-2) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .12em !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+}
+
+.move-to-input {
+  min-width: 0 !important;
+  width: 100% !important;
+  height: 34px !important;
+  padding: 0 8px !important;
+  border: 1px solid rgba(78,159,255,.24) !important;
+  border-radius: 8px !important;
+  background: rgba(4,11,18,.5) !important;
+  color: var(--text) !important;
+  outline: none !important;
+  text-align: right !important;
+  -moz-appearance: textfield !important;
+  appearance: textfield !important;
+}
+
+.move-to-input::-webkit-outer-spin-button,
+.move-to-input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+
+.move-to-input:focus {
+  border-color: var(--line-2) !important;
+  box-shadow: 0 0 0 3px rgba(45,140,255,.14) !important;
+}
+
+.move-to-input:disabled {
+  opacity: 0.42 !important;
+  color: rgba(238,247,255,.52) !important;
+  background: rgba(4,11,18,.24) !important;
+  border-color: rgba(142,173,199,.18) !important;
+  cursor: not-allowed !important;
+}
+
+.move-to-button {
+  height: 34px !important;
+  align-self: end !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-controls {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .move-to-button {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+  }
+}
+
+/* 0.8.4 Move XY compact Machine Info repair */
+.machine-card {
+  overflow: hidden !important;
+}
+
+.machine-card .card-title {
+  margin-bottom: 8px !important;
+}
+
+.machine-info > div {
+  padding: 6px 0 8px !important;
+}
+
+.machine-info > div > span {
+  margin-bottom: 4px !important;
+}
+
+#machineState {
+  font-size: clamp(30px, 3.4vw, 42px) !important;
+  line-height: .95 !important;
+}
+
+.machine-card .machine-info strong#positionState.position-value {
+  font-size: clamp(15px, 1.15vw, 18px) !important;
+}
+
+.move-to-row {
+  padding-top: 6px !important;
+  padding-bottom: 8px !important;
+}
+
+.move-to-controls {
+  gap: 6px !important;
+}
+
+.move-to-input {
+  height: 28px !important;
+  font-size: 12px !important;
+  padding: 0 6px !important;
+}
+
+.move-to-button {
+  height: 28px !important;
+  min-height: 28px !important;
+  padding: 0 8px !important;
+  font-size: 10px !important;
+}
+
+.machine-info .rotary-inline-row {
+  padding-top: 6px !important;
+}
+
+.machine-info .rotary-inline-labels {
+  margin-bottom: 5px !important;
+}
+
+.machine-info .rotary-inline-controls {
+  align-items: center !important;
+}
+
+.machine-info .rotary-switch {
+  min-height: 30px !important;
+}
+
+.machine-info .rotary-switch input {
+  width: 38px !important;
+  height: 20px !important;
+}
+
+.machine-info .rotary-switch input::before {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.machine-info .rotary-switch input:checked::before {
+  transform: translateX(18px) !important;
+}
+
+.machine-info #rotaryDiameter,
+.machine-info #setRotaryDiameter {
+  height: 28px !important;
+  min-height: 28px !important;
+  font-size: 11px !important;
+}
+
+
+/* 0.8.4 Machine Info title removal + current position grid */
+.machine-card .machine-info-title {
+  display: none !important;
+}
+
+.machine-card {
+  padding-top: 12px !important;
+}
+
+.current-position-row {
+  padding-top: 6px !important;
+}
+
+.machine-card .machine-info strong#positionState.position-value.position-value-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  white-space: normal !important;
+  overflow: visible !important;
+  font-size: inherit !important;
+  line-height: 1.1 !important;
+}
+
+.machine-card .machine-info strong#positionState.position-value.position-value-grid .position-group {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 4px !important;
+  align-items: start !important;
+  min-width: 0 !important;
+}
+
+.machine-card .machine-info strong#positionState.position-value.position-value-grid .axis-label {
+  display: block !important;
+  margin: 0 !important;
+  color: var(--line-2) !important;
+  text-transform: uppercase !important;
+  letter-spacing: .12em !important;
+  font-size: 10px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+}
+
+.machine-card .machine-info strong#positionState.position-value.position-value-grid .position-number {
+  display: block !important;
+  min-width: 0 !important;
+  color: #ffffff !important;
+  font-size: clamp(14px, 1.1vw, 18px) !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+
+/* 0.8.4 Move button square sizing */
+.move-to-button {
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  min-height: 58px !important;
+  padding: 0 !important;
+  align-self: end !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+}
+
+.move-to-controls {
+  align-items: end !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-button {
+    width: 100% !important;
+    height: 40px !important;
+    min-height: 40px !important;
+  }
+}
+
+/* 0.8.4 Move button full row-height sizing */
+.move-to-controls {
+  align-items: stretch !important;
+}
+
+.move-to-button {
+  width: 64px !important;
+  min-width: 64px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  align-self: stretch !important;
+  padding: 0 8px !important;
+  border-radius: 10px !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    align-self: auto !important;
+  }
+}
+
+/* 0.8.4 Move button Z-style tall button */
+.move-to-controls {
+  align-items: end !important;
+}
+
+.move-to-button {
+  width: 54px !important;
+  min-width: 54px !important;
+  height: 108px !important;
+  min-height: 108px !important;
+  align-self: end !important;
+  padding: 10px 6px !important;
+  border-radius: 11px !important;
+  border-color: rgba(255,193,92,.34) !important;
+  background:
+    radial-gradient(circle at 35% 20%, rgba(255,220,140,.16), transparent 34%),
+    linear-gradient(145deg, rgba(88,63,34,.96), rgba(39,34,28,.98) 52%, rgba(18,20,22,.98)) !important;
+  color: #ffffff !important;
+  box-shadow:
+    inset 0 2px 1px rgba(255,255,255,.10),
+    inset 0 -7px 16px rgba(0,0,0,.26),
+    0 9px 17px rgba(0,0,0,.32) !important;
+  text-shadow: 0 1px 1px rgba(0,0,0,.55) !important;
+  font-size: 12px !important;
+  font-weight: 900 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.move-to-button:hover {
+  border-color: rgba(107,188,255,.9) !important;
+  box-shadow: 0 0 0 3px rgba(45,140,255,.12), 0 10px 22px rgba(0,0,0,.33) !important;
+}
+
+.move-to-button:active {
+  transform: translateY(1px) scale(.98) !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    align-self: auto !important;
+  }
+}
+
+/* 0.8.4 Move button true 1:2 ratio final override */
+.move-to-controls {
+  align-items: end !important;
+}
+
+.move-to-button {
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
+  height: 116px !important;
+  min-height: 116px !important;
+  max-height: 116px !important;
+  align-self: end !important;
+  flex: 0 0 auto !important;
+  aspect-ratio: auto !important;
+  padding: 0 !important;
+  display: grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+  }
+}
+
+/* 0.8.4 Move row compact final override */
+.move-to-row {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+
+.move-to-row > span {
+  margin-bottom: 4px !important;
+}
+
+.move-to-controls {
+  align-items: end !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 58px !important;
+  gap: 8px !important;
+}
+
+.move-to-controls label {
+  align-self: end !important;
+}
+
+.move-to-input {
+  height: 28px !important;
+  min-height: 28px !important;
+}
+
+.move-to-button {
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
+  height: 116px !important;
+  min-height: 116px !important;
+  max-height: 116px !important;
+  align-self: end !important;
+}
+
+/* 0.8.4 Move row two-row grid final override */
+.move-to-row {
+  display: grid !important;
+  grid-template-columns: 1fr 58px !important;
+  grid-template-rows: auto auto !important;
+  column-gap: 10px !important;
+  row-gap: 4px !important;
+  padding-top: 4px !important;
+  padding-bottom: 6px !important;
+}
+
+.move-to-row > span {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  margin: 0 !important;
+}
+
+.move-to-controls {
+  display: contents !important;
+}
+
+.move-to-controls label {
+  grid-row: 2 !important;
+  align-self: end !important;
+  min-width: 0 !important;
+}
+
+.move-to-controls label:nth-of-type(1) {
+  grid-column: 1 !important;
+  width: 31% !important;
+}
+
+.move-to-controls label:nth-of-type(2) {
+  grid-column: 1 !important;
+  width: 31% !important;
+  margin-left: 34% !important;
+}
+
+.move-to-controls label:nth-of-type(3) {
+  grid-column: 1 !important;
+  width: 31% !important;
+  margin-left: 68% !important;
+}
+
+.move-to-button {
+  grid-column: 2 !important;
+  grid-row: 1 / 3 !important;
+  width: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
+  height: 116px !important;
+  min-height: 116px !important;
+  max-height: 116px !important;
+  align-self: end !important;
+  justify-self: end !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-row {
+    display: block !important;
+  }
+
+  .move-to-controls {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .move-to-controls label {
+    width: auto !important;
+    margin-left: 0 !important;
+  }
+
+  .move-to-button {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+  }
+}
+
+/* 0.8.4 Move row tighten final override */
+.move-to-row {
+  grid-template-columns: 1fr 50px !important;
+  row-gap: 0 !important;
+  padding-top: 3px !important;
+  padding-bottom: 4px !important;
+}
+
+.move-to-controls label {
+  transform: translateY(-8px) !important;
+}
+
+.move-to-button {
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  font-size: 11px !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-controls label {
+    transform: none !important;
+  }
+
+  .move-to-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+  }
+}
+
+/* 0.8.4 Move button 50x70 final override */
+.move-to-button {
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 70px !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  font-size: 11px !important;
+}
+
+@media (max-width: 900px) {
+  .move-to-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    max-height: 44px !important;
+  }
+}
+
+/* 0.8.4 Shrink machine status + enlarge rotary controls */
+#machineState {
+  font-size: clamp(24px, 2.8vw, 34px) !important;
+  line-height: 0.95 !important;
+}
+
+.machine-info > div:first-child {
+  padding-bottom: 6px !important;
+}
+
+.machine-info .rotary-inline-row {
+  padding-top: 6px !important;
+}
+
+.machine-info .rotary-inline-controls {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) !important;
+  gap: 12px !important;
+  align-items: center !important;
+}
+
+.machine-info .rotary-diameter-block {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.machine-info .rotary-diameter-inline {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+.machine-info #rotaryDiameter {
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 12px !important;
+  font-size: 14px !important;
+}
+
+.machine-info #setRotaryDiameter {
+  height: 38px !important;
+  min-height: 38px !important;
+  min-width: 78px !important;
+  padding: 0 16px !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+}
+
+
+/* 0.8.4 Rotary Set button insert/remove behavior */
+.machine-info .rotary-diameter-inline.rotary-synced {
+  grid-template-columns: 1fr minmax(120px, 154px) !important;
+}
+
+.machine-info .rotary-diameter-inline.rotary-synced #rotaryDiameter {
+  grid-column: 2 !important;
+  width: 100% !important;
+  justify-self: end !important;
+}
+
+.machine-info .rotary-diameter-inline.rotary-synced #setRotaryDiameter,
+.machine-info #setRotaryDiameter[hidden] {
+  display: none !important;
+}
+
+.machine-info .rotary-diameter-inline.rotary-dirty {
+  grid-template-columns: minmax(0, 1fr) auto !important;
+}
+
+.machine-info .rotary-diameter-inline.rotary-dirty #rotaryDiameter {
+  grid-column: 1 !important;
+  width: 100% !important;
+}
+
+.machine-info .rotary-diameter-inline.rotary-dirty #setRotaryDiameter {
+  grid-column: 2 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 0.8.4 Rotary switch ON knob alignment */
+.machine-info .rotary-switch input:checked::before {
+  transform: translateX(31px) !important;
+}
+
+/* 0.8.5 Compact Machine Info correction */
+@media (max-width: 760px) {
+  .machine-card .machine-info {
+    overflow: visible !important;
+  }
+
+  .machine-card .move-to-row {
+    display: block !important;
+  }
+
+  .machine-card .move-to-controls {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    align-items: end !important;
+  }
+
+  .machine-card .move-to-controls label,
+  .machine-card .move-to-controls label:nth-of-type(1),
+  .machine-card .move-to-controls label:nth-of-type(2),
+  .machine-card .move-to-controls label:nth-of-type(3) {
+    grid-column: auto !important;
+    grid-row: 1 !important;
+    width: auto !important;
+    margin-left: 0 !important;
+    transform: none !important;
+    min-width: 0 !important;
+  }
+
+  .machine-card .move-to-input {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .machine-card .move-to-button {
+    grid-column: 3 !important;
+    grid-row: 2 !important;
+    justify-self: end !important;
+    align-self: start !important;
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+    margin-top: 10px !important;
+  }
+
+  .machine-card .rotary-inline-controls {
+    display: grid !important;
+    grid-template-columns: minmax(96px, auto) minmax(0, 1fr) !important;
+    gap: 12px !important;
+    align-items: start !important;
+  }
+
+  .machine-card .rotary-diameter-block,
+  .machine-card .rotary-diameter-inline {
+    align-self: start !important;
+    margin-top: 0 !important;
+  }
+
+  .machine-card .rotary-diameter-inline.rotary-synced {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .machine-card .rotary-diameter-inline.rotary-synced #rotaryDiameter {
+    grid-column: 1 !important;
+    justify-self: end !important;
+    width: min(154px, 100%) !important;
+  }
+}
+
+/* 0.8.5 compact move-row alignment correction */
+@media (max-width: 760px) {
+  .machine-card .move-to-controls {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) 50px !important;
+    gap: 8px !important;
+    align-items: end !important;
+  }
+
+  .machine-card .move-to-controls label,
+  .machine-card .move-to-controls label:nth-of-type(1),
+  .machine-card .move-to-controls label:nth-of-type(2),
+  .machine-card .move-to-controls label:nth-of-type(3) {
+    grid-row: 1 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    transform: none !important;
+  }
+
+  .machine-card .move-to-button {
+    grid-column: 4 !important;
+    grid-row: 1 !important;
+    justify-self: end !important;
+    align-self: end !important;
+    margin-top: 0 !important;
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+  }
+
+  /* pull the rotary diameter control up a bit */
+  .machine-card .rotary-inline-controls {
+    align-items: center !important;
+  }
+
+  .machine-card .rotary-diameter-block,
+  .machine-card .rotary-diameter-inline {
+    align-self: center !important;
+    margin-top: 0 !important;
+  }
+}
+
+/* 0.8.5 compact Move To Position row: label-over-control layout */
+@media (max-width: 760px) {
+  .machine-card .move-to-controls {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 50px !important;
+    grid-template-rows: auto 70px !important;
+    column-gap: 8px !important;
+    row-gap: 6px !important;
+    align-items: end !important;
+  }
+
+  .machine-card .move-to-controls label {
+    display: grid !important;
+    grid-template-rows: auto 38px !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+  }
+
+  .machine-card .move-to-controls label:nth-of-type(1) {
+    grid-column: 1 !important;
+    grid-row: 1 / 3 !important;
+  }
+
+  .machine-card .move-to-controls label:nth-of-type(2) {
+    grid-column: 2 !important;
+    grid-row: 1 / 3 !important;
+  }
+
+  .machine-card .move-to-controls label:nth-of-type(3) {
+    grid-column: 3 !important;
+    grid-row: 1 / 3 !important;
+  }
+
+  .machine-card .move-to-controls label > span {
+    font-size: 13px !important;
+    line-height: 1 !important;
+    letter-spacing: 0.08em !important;
+    font-weight: 900 !important;
+    color: var(--line-2) !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+  }
+
+  .machine-card .move-to-input {
+    height: 38px !important;
+    min-height: 38px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+  }
+
+  .machine-card .move-to-button {
+    grid-column: 4 !important;
+    grid-row: 2 !important;
+    justify-self: end !important;
+    align-self: end !important;
+    margin: 0 !important;
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    height: 70px !important;
+    min-height: 70px !important;
+    max-height: 70px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* 0.8.5 Move To Position unified label-over-control layout */
+.machine-card .move-to-controls {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 50px !important;
+  grid-template-rows: auto 70px !important;
+  column-gap: 8px !important;
+  row-gap: 6px !important;
+  align-items: end !important;
+}
+
+.machine-card .move-to-controls label,
+.machine-card .move-to-controls label:nth-of-type(1),
+.machine-card .move-to-controls label:nth-of-type(2),
+.machine-card .move-to-controls label:nth-of-type(3) {
+  display: grid !important;
+  grid-template-rows: auto 38px !important;
+  gap: 6px !important;
+  min-width: 0 !important;
+  width: auto !important;
+  margin-left: 0 !important;
+  transform: none !important;
+  grid-row: 1 / 3 !important;
+}
+
+.machine-card .move-to-controls label:nth-of-type(1) {
+  grid-column: 1 !important;
+}
+
+.machine-card .move-to-controls label:nth-of-type(2) {
+  grid-column: 2 !important;
+}
+
+.machine-card .move-to-controls label:nth-of-type(3) {
+  grid-column: 3 !important;
+}
+
+.machine-card .move-to-controls label > span {
+  font-size: 13px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 900 !important;
+  color: var(--line-2) !important;
+  text-transform: uppercase !important;
+  margin: 0 !important;
+}
+
+.machine-card .move-to-input {
+  height: 38px !important;
+  min-height: 38px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.machine-card .move-to-button {
+  grid-column: 4 !important;
+  grid-row: 2 !important;
+  justify-self: end !important;
+  align-self: end !important;
+  margin: 0 !important;
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 70px !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  font-size: 11px !important;
+}
+
+/* keep same layout, just tighter, on narrow screens */
+@media (max-width: 760px) {
+  .machine-card .move-to-controls {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 50px !important;
+    column-gap: 8px !important;
+  }
+}
+
+/* 0.8.5 Move To Position full-width row correction */
+.machine-card .move-to-row {
+  display: block !important;
+}
+
+.machine-card .move-to-row > span {
+  display: block !important;
+  margin: 0 0 8px 0 !important;
+}
+
+.machine-card .move-to-controls {
+  display: grid !important;
+  width: 100% !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) 50px !important;
+  grid-template-rows: auto 70px !important;
+  column-gap: 8px !important;
+  row-gap: 6px !important;
+  align-items: end !important;
+}
+
+.machine-card .move-to-controls label,
+.machine-card .move-to-controls label:nth-of-type(1),
+.machine-card .move-to-controls label:nth-of-type(2),
+.machine-card .move-to-controls label:nth-of-type(3) {
+  display: grid !important;
+  grid-template-rows: auto 38px !important;
+  gap: 6px !important;
+  grid-row: 1 / 3 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+.machine-card .move-to-controls label:nth-of-type(1) {
+  grid-column: 1 !important;
+}
+
+.machine-card .move-to-controls label:nth-of-type(2) {
+  grid-column: 2 !important;
+}
+
+.machine-card .move-to-controls label:nth-of-type(3) {
+  grid-column: 3 !important;
+}
+
+.machine-card .move-to-controls label > span {
+  font-size: 13px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 900 !important;
+  color: var(--line-2) !important;
+  text-transform: uppercase !important;
+  margin: 0 !important;
+}
+
+.machine-card .move-to-input {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+.machine-card .move-to-button {
+  grid-column: 4 !important;
+  grid-row: 2 !important;
+  justify-self: end !important;
+  align-self: end !important;
+  margin: 0 !important;
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 70px !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  font-size: 11px !important;
+}
+
+/* 0.8.5 Move To Position tighten label/input spacing */
+.machine-card .move-to-controls {
+  grid-template-rows: auto auto !important;
+  row-gap: 2px !important;
+  align-items: end !important;
+}
+
+.machine-card .move-to-controls label,
+.machine-card .move-to-controls label:nth-of-type(1),
+.machine-card .move-to-controls label:nth-of-type(2),
+.machine-card .move-to-controls label:nth-of-type(3) {
+  grid-template-rows: auto 38px !important;
+  gap: 2px !important;
+  align-self: end !important;
+}
+
+.machine-card .move-to-button {
+  grid-row: 1 / 3 !important;
+  align-self: end !important;
+}
+
+/* 0.8.5 Move To Position title-to-axis spacing match */
+.machine-card .move-to-row > span {
+  margin-bottom: 2px !important;
+}
+
+.machine-card .move-to-controls {
+  row-gap: 0 !important;
+}
+
+.machine-card .move-to-controls label,
+.machine-card .move-to-controls label:nth-of-type(1),
+.machine-card .move-to-controls label:nth-of-type(2),
+.machine-card .move-to-controls label:nth-of-type(3) {
+  gap: 1px !important;
+}
+
+/* 0.8.5 Move To Position compact row height correction */
+.machine-card .move-to-controls {
+  grid-template-rows: auto 38px !important;
+  row-gap: 1px !important;
+  align-items: end !important;
+}
+
+.machine-card .move-to-controls label,
+.machine-card .move-to-controls label:nth-of-type(1),
+.machine-card .move-to-controls label:nth-of-type(2),
+.machine-card .move-to-controls label:nth-of-type(3) {
+  grid-row: 1 / 3 !important;
+  grid-template-rows: auto 38px !important;
+  gap: 1px !important;
+  align-self: end !important;
+}
+
+.machine-card .move-to-button {
+  grid-column: 4 !important;
+  grid-row: 2 !important;
+  align-self: end !important;
+  justify-self: end !important;
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
+  transform: none !important;
+}
+
+/* 0.8.5 Move button taller without changing row spacing */
+.machine-card .move-to-button {
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  align-self: end !important;
+  transform: translateY(-6px) !important;
+}
+
+/* 0.8.5 compact dashboard card order */
+@media (max-width: 760px) {
+  #dashboardGrid.quadrant-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+  }
+
+  #dashboardGrid > .left-column,
+  #dashboardGrid > .middle-column,
+  #dashboardGrid > .right-column {
+    display: contents !important;
+  }
+
+  #dashboardGrid .machine-card {
+    order: 1 !important;
+  }
+
+  #dashboardGrid .axis-controls {
+    order: 2 !important;
+  }
+
+  #dashboardGrid .machine-extras-card {
+    order: 3 !important;
+  }
+
+  #dashboardGrid .preview-card {
+    order: 4 !important;
+  }
+
+  #dashboardGrid .files-card {
+    order: 5 !important;
+  }
+
+  #dashboardGrid .machine-card,
+  #dashboardGrid .axis-controls,
+  #dashboardGrid .machine-extras-card,
+  #dashboardGrid .preview-card,
+  #dashboardGrid .files-card {
+    width: 100% !important;
+  }
+}
+
+/* 0.8.8 patch: keep Machine Info content in four stable rows while resizing.
+   This prevents Machine Status + Current Position, and Move To Position + Rotary,
+   from collapsing onto shared rows at intermediate viewport widths. */
+.machine-info-grid,
+.machine-info-layout,
+.machine-info-card .machine-info-grid,
+.machine-info-card .machine-info-layout {
+  grid-template-columns: 1fr !important;
+}
+
+.machine-info-card .status-block,
+.machine-info-card .position-block,
+.machine-info-card .move-block,
+.machine-info-card .rotary-block,
+.machine-info-card .machine-status-block,
+.machine-info-card .current-position-block,
+.machine-info-card .move-to-position-block,
+.machine-info-card .rotary-row {
+  grid-column: 1 / -1 !important;
+}
+
+/* Keep the rotary/diameter controls together as the fourth row. */
+.machine-info-card .rotary-section,
+.machine-info-card .rotary-diameter-row {
+  grid-column: 1 / -1 !important;
+}
+
+/* 0.8.8 patch: force the top machine panel into stable stacked rows.
+   Uses the actual top-card layout behavior rather than the missed placeholder class names. */
+.machine-status-card,
+.machine-info-card,
+.machine-panel,
+.machine-card {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-auto-flow: row !important;
+}
+
+/* Make each direct section consume its own row. */
+.machine-status-card > *,
+.machine-info-card > *,
+.machine-panel > *,
+.machine-card > * {
+  grid-column: 1 / -1 !important;
+}
+
+/* Also catch the visible section names/classes used by the panel. */
+.machine-status,
+.current-position,
+.move-to-position,
+.rotary,
+.rotary-row,
+.rotary-section {
+  grid-column: 1 / -1 !important;
+}
+
+/* Preserve the internal X/Y/Z layouts inside their own rows. */
+.current-position,
+.position-grid,
+.position-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(80px, 1fr));
+}
+
+.move-to-position,
+.move-position,
+.move-grid,
+.goto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(80px, 1fr)) auto;
+  align-items: end;
+}
+
+/* 0.8.8 patch: actual Machine Info markup row lock.
+   The Machine Info panel has exactly four direct children:
+   1. Machine Status
+   2. Current Position
+   3. Move To Position
+   4. Rotary / Diameter */
+.machine-info {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  grid-auto-flow: row !important;
+  align-items: stretch !important;
+}
+
+.machine-info > div,
+.machine-info > .current-position-row,
+.machine-info > .move-to-row,
+.machine-info > .rotary-inline-row {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+/* Keep the current position values together inside row 2. */
+.current-position-row .position-value-grid {
+  width: 100% !important;
+}
+
+/* 0.8.10 continuous jog mobile touch fix */
+.jog-button,
+.large-action {
+  touch-action: none !important;
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+}

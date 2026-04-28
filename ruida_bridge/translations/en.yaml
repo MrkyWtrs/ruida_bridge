@@ -25,6 +25,10 @@ configuration:
     name: Maximum Y Travel (mm)
   ruida_z_button_step_mm:
     name: Z Button Step (mm)
+  go_to_z_max_delta_mm:
+    name: Go To Z Max Single Move (mm)
+  go_to_z_allow_out_of_range:
+    name: Go To Z Allow Out-of-Range Targets
   device_id:
     name: Device ID
   device_name:
