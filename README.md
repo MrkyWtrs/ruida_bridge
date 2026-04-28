@@ -13,6 +13,10 @@ It exposes machine status, X/Y/Z position, jog controls, rotary controls, saved 
 
 ---
 
+<img width="1809" height="892" alt="image" src="https://github.com/user-attachments/assets/9b46a638-471b-4ccc-bd58-8bcf54e0dd75" />
+
+---
+
 ## Current version
 
 **0.9.0 Continuous Jog Checkpoint**
@@ -46,7 +50,6 @@ This release adds press-and-hold continuous jog support for the dashboard XY and
 
 ---
 
-<img width="1809" height="892" alt="image" src="https://github.com/user-attachments/assets/9b46a638-471b-4ccc-bd58-8bcf54e0dd75" />
 
 
 
