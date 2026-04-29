@@ -232,7 +232,7 @@ COMMAND_MAP = {
 
 BUTTON_META = {
     "home": {
-        "name": "Home Machine",
+        "name": "Home XY Axis",
         "unique_id": eid("home_machine"),
         "icon": "mdi:home-import-outline",
     },

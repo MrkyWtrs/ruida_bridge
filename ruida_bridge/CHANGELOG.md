@@ -1,4 +1,4 @@
-## 0.9.1
+## 0.9.2
 
 - Added config-only controller extent override behavior.
 - By default, active X/Y/Z travel limits come from controller-reported machine settings.
@@ -9,10 +9,8 @@
 
 - Added popup guards for local-only file run attempts and out-of-bounds Move To Position requests.
 
-## 0.9.0
-
 - Removed the configurable Go To Z maximum single-move limit.
-- Marked the continuous jog work as the 0.9.0 checkpoint.
+- Marked the continuous jog work as the 0.9.2 checkpoint.
 - Converted dashboard XY jog buttons to press-and-hold continuous jog.
 - Converted dashboard Z Up and Z Down to RDWorks-style continuous jog packets.
 - Fixed duplicate jog_stop events from pointer capture release.
@@ -185,9 +183,6 @@
 - File row click downloads/refetches selected controller file
 - Preview File Path points to /homeassistant/www/ruida_bridge/downloads/<file>.rd
 - Selected downloaded RD file renders automatically
-
-
-
 
 ## 0.7.3
 - Marked patched 0.7.2 UI work as the 0.7.3 checkpoint

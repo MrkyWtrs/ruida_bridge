@@ -3689,3 +3689,1480 @@ body::-webkit-scrollbar-corner {
 .stop-job-button span {
   color: #ff9b91 !important;
 }
+
+/* 0.9.1 Run Selected laser safety confirmation dialog */
+.laser-confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(3px);
+}
+
+.laser-confirm-overlay[hidden] {
+  display: none !important;
+}
+
+.laser-confirm-dialog {
+  width: min(520px, calc(100vw - 48px));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  background: #111827;
+  color: #ffffff;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 14px;
+}
+
+.laser-confirm-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.laser-confirm-body h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.laser-confirm-body p {
+  margin: 0 0 10px;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.4;
+}
+
+.laser-confirm-file {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 8px 10px;
+  overflow-wrap: anywhere;
+}
+
+.laser-confirm-warning {
+  color: #fbbf24 !important;
+}
+
+.laser-confirm-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.laser-confirm-button {
+  min-width: 92px;
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.laser-confirm-no {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.laser-confirm-yes {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.laser-confirm-button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.laser-confirm-button:hover {
+  transform: translateY(-1px);
+}
+
+/* 0.9.1 Unified dialog system */
+.ruida-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(3px);
+}
+
+.ruida-dialog-overlay[hidden] {
+  display: none !important;
+}
+
+.ruida-dialog-box {
+  width: min(520px, calc(100vw - 48px));
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  background: #111827;
+  color: #ffffff;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 14px;
+}
+
+.ruida-dialog-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  background: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.ruida-dialog-box.danger .ruida-dialog-icon {
+  background: rgba(220, 38, 38, 0.18);
+  color: #fca5a5;
+}
+
+.ruida-dialog-body h2 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.15;
+}
+
+.ruida-dialog-body p {
+  margin: 0 0 10px;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.4;
+}
+
+.ruida-dialog-message {
+  white-space: pre-line;
+}
+
+.ruida-dialog-details {
+  margin: 0;
+  padding-left: 20px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.ruida-dialog-details[hidden] {
+  display: none !important;
+}
+
+.ruida-dialog-details li {
+  margin: 0 0 6px;
+}
+
+.ruida-dialog-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.ruida-dialog-button {
+  min-width: 92px;
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-weight: 800;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.ruida-dialog-button.primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.ruida-dialog-button.danger {
+  background: #dc2626;
+  color: #ffffff;
+}
+
+.ruida-dialog-button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.ruida-dialog-button:hover {
+  transform: translateY(-1px);
+}
+
+
+/* neutralize old generic child-label rules inside redesigned buttons */
+.jog-combined .xy-pad .jog-button.xy-redesign span:last-child,
+.jog-combined .z-stack .large-action.z-redesign span:last-child,
+.jog-combined .z-stack .large-action.z-redesign strong:last-child {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+}
+
+
+/* =========================
+   XY CLUSTER
+   ========================= */
+.jog-combined .xy-pad .jog-button.xy-redesign {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  white-space: normal !important;
+}
+
+.jog-combined .xy-pad .jog-button.xy-redesign > .btn-glyph,
+.jog-combined .xy-pad .jog-button.xy-redesign > .btn-label {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  line-height: 1 !important;
+  font-family: inherit !important;
+  color: inherit !important;
+  text-transform: uppercase !important;
+  text-shadow: none !important;
+}
+
+.jog-combined .xy-pad .jog-button.xy-redesign > .btn-glyph {
+  font-size: 1.55rem !important;
+  font-weight: 400 !important;
+  line-height: 0.95 !important;
+}
+
+.jog-combined .xy-pad .jog-button.xy-redesign > .btn-label {
+  font-size: 0.84rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.055em !important;
+}
+
+/* Make center home feel intentionally different */
+.jog-combined .xy-pad .jog-button.home-redesign {
+  gap: 4px !important;
+}
+
+.jog-combined .xy-pad .jog-button.home-redesign::after {
+  content: "";
+  position: absolute;
+  inset: 15px;
+  border-radius: 999px;
+  border: 1px solid rgba(120, 180, 255, 0.18);
+  pointer-events: none;
+}
+
+.jog-combined .xy-pad .jog-button.home-redesign > .btn-label-top,
+.jog-combined .xy-pad .jog-button.home-redesign > .btn-label-bottom {
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.055em !important;
+}
+
+.jog-combined .xy-pad .jog-button.home-redesign > .btn-glyph-home {
+  font-size: 1.20rem !important;
+  font-weight: 400 !important;
+  line-height: 0.9 !important;
+}
+
+/* =========================
+   Z COLUMN
+   ========================= */
+.jog-combined .z-stack .large-action.z-redesign {
+  position: relative !important;
+  display: block !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  white-space: normal !important;
+}
+
+/* hide generic flow styling and rebuild with positioning */
+.jog-combined .z-stack .large-action.z-redesign > .btn-label,
+.jog-combined .z-stack .large-action.z-redesign > .btn-glyph {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: inherit !important;
+  text-transform: uppercase !important;
+  text-shadow: none !important;
+  color: inherit !important;
+}
+
+/* top "Z" badge */
+.jog-combined .z-stack .large-action.z-redesign > .btn-label-top {
+  position: absolute !important;
+  top: 10px !important;
+  right: 10px !important;
+  width: 24px !important;
+  height: 24px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  font-size: 0.70rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  border: 1px solid rgba(255, 220, 120, 0.18) !important;
+  line-height: 1 !important;
+}
+
+/* big center glyph */
+.jog-combined .z-stack .large-action.z-redesign > .btn-glyph {
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -58%) !important;
+  width: auto !important;
+  font-size: 2.35rem !important;
+  font-weight: 400 !important;
+  line-height: 0.82 !important;
+  text-align: center !important;
+}
+
+.jog-combined .z-stack .large-action.z-redesign > .btn-glyph-home {
+  font-size: 2.10rem !important;
+  transform: translate(-50%, -56%) !important;
+}
+
+/* bottom action label */
+.jog-combined .z-stack .large-action.z-redesign > .btn-label-bottom {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 12px !important;
+  width: 100% !important;
+  text-align: center !important;
+  font-size: 0.86rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.055em !important;
+  line-height: 1 !important;
+}
+
+/* neutralize old generic last-child rules */
+.jog-combined .xy-pad .jog-button.xy-redesign span:last-child,
+.jog-combined .xy-pad .jog-button.xy-redesign strong:last-child,
+.jog-combined .z-stack .large-action.z-redesign span:last-child,
+.jog-combined .z-stack .large-action.z-redesign strong:last-child {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+}
+
+
+/* XY arrow buttons */
+.jog-combined .xy-pad .jog-button.xy-badge-button .btn-glyph {
+  top: 25% !important;
+  font-size: 1.55rem !important;
+  font-weight: 400 !important;
+}
+
+.jog-combined .xy-pad .jog-button.xy-badge-button .btn-label {
+  bottom: 22% !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+}
+
+/* Center HOME / glyph / XY */
+.jog-combined .xy-pad .jog-button.home-badge-button .btn-label-top {
+  top: 21% !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+}
+
+.jog-combined .xy-pad .jog-button.home-badge-button .btn-glyph-home {
+  top: 42% !important;
+  font-size: 1.00rem !important;
+  font-weight: 400 !important;
+}
+
+.jog-combined .xy-pad .jog-button.home-badge-button .btn-label-bottom {
+  bottom: 21% !important;
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+}
+
+/* Z vertical buttons */
+.jog-combined .z-stack .large-action.z-badge-button .btn-axis {
+  top: 12% !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.jog-combined .z-stack .large-action.z-badge-button .btn-glyph {
+  top: 36% !important;
+  font-size: 2.10rem !important;
+  font-weight: 400 !important;
+}
+
+.jog-combined .z-stack .large-action.z-badge-button .btn-glyph-home {
+  top: 37% !important;
+  font-size: 1.75rem !important;
+}
+
+.jog-combined .z-stack .large-action.z-badge-button .btn-label {
+  bottom: 13% !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+}
+
+/* Neutralize older generic child label rules inside redesigned controls. */
+.jog-combined .xy-pad .jog-button.xy-redesign span:last-child,
+.jog-combined .xy-pad .jog-button.xy-redesign strong:last-child,
+.jog-combined .z-stack .large-action.z-redesign span:last-child,
+.jog-combined .z-stack .large-action.z-redesign strong:last-child {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+}
+
+
+/* Keep the Z column from collapsing. */
+.jog-combined .z-inline,
+.jog-combined .z-stack {
+  min-width: 96px !important;
+  width: 96px !important;
+}
+
+/* Shared clean button internals. */
+.jog-combined .xy-pad .xy-clean-button,
+.jog-combined .z-stack .z-clean-button {
+  box-sizing: border-box !important;
+  display: grid !important;
+  align-items: center !important;
+  justify-items: center !important;
+  overflow: hidden !important;
+  white-space: normal !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jog-combined .xy-pad .xy-clean-button > span,
+.jog-combined .z-stack .z-clean-button > span {
+  display: block !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+  font-family: inherit !important;
+  color: inherit !important;
+  text-transform: uppercase !important;
+  text-shadow: none !important;
+  line-height: 1 !important;
+  min-width: 0 !important;
+}
+
+/* XY arrow buttons: glyph over label. */
+.jog-combined .xy-pad .xy-clean-button:not(.xy-home-clean) {
+  grid-template-rows: 1fr auto auto 1fr !important;
+  row-gap: 6px !important;
+}
+
+.jog-combined .xy-pad .xy-clean-button:not(.xy-home-clean) .clean-glyph {
+  grid-row: 2 !important;
+  font-size: 1.45rem !important;
+  font-weight: 400 !important;
+}
+
+.jog-combined .xy-pad .xy-clean-button:not(.xy-home-clean) .clean-label {
+  grid-row: 3 !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+}
+
+/* Center HOME / glyph / XY. */
+.jog-combined .xy-pad .xy-home-clean {
+  grid-template-rows: 1fr auto auto auto 1fr !important;
+  row-gap: 3px !important;
+}
+
+.jog-combined .xy-pad .xy-home-clean .clean-label {
+  font-size: 0.72rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+}
+
+.jog-combined .xy-pad .xy-home-clean .clean-glyph {
+  font-size: 1.05rem !important;
+  font-weight: 400 !important;
+}
+
+/* Z buttons: Z / glyph / action. */
+.jog-combined .z-stack .z-clean-button {
+  width: 96px !important;
+  min-width: 96px !important;
+  max-width: 96px !important;
+  grid-template-rows: 1fr auto auto auto 1fr !important;
+  row-gap: 5px !important;
+}
+
+.jog-combined .z-stack .z-clean-button .clean-label {
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.035em !important;
+}
+
+.jog-combined .z-stack .z-clean-button .clean-glyph {
+  font-size: 2.00rem !important;
+  font-weight: 400 !important;
+}
+
+.jog-combined .z-stack .z-clean-button .clean-home-glyph {
+  font-size: 1.70rem !important;
+}
+
+/* Neutralize old generic last-child rules inside clean buttons. */
+.jog-combined .xy-pad .xy-clean-button span:last-child,
+.jog-combined .xy-pad .xy-clean-button strong:last-child,
+.jog-combined .z-stack .z-clean-button span:last-child,
+.jog-combined .z-stack .z-clean-button strong:last-child {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
+}
+
+
+/* keep the Z column from collapsing */
+.jog-combined .z-inline,
+.jog-combined .z-stack {
+  width: 102px !important;
+  min-width: 102px !important;
+}
+
+/* shared industrial button base */
+.jog-combined .industrial-icon-btn {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  white-space: normal !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-shadow: none !important;
+  position: relative !important;
+}
+
+.jog-combined .industrial-icon-btn span,
+.jog-combined .industrial-icon-btn svg {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.jog-combined .xy-pad .industrial-icon-btn {
+  width: 94px !important;
+  height: 94px !important;
+  border-radius: 22px !important;
+  background: linear-gradient(180deg, #223548, #162838) !important;
+  border: 1px solid rgba(140, 190, 235, 0.22) !important;
+  box-shadow:
+    inset 0 1px 10px rgba(255,255,255,0.04),
+    0 8px 16px rgba(0,0,0,0.25) !important;
+  color: #e6f2ff !important;
+}
+
+.jog-combined .xy-pad .xy-arrow-btn .icon-arrow {
+  font-size: 2.25rem !important;
+  line-height: 1 !important;
+  font-weight: 400 !important;
+  color: #dcecff !important;
+  transform: translateY(-1px) !important;
+}
+
+.jog-combined .xy-pad .xy-home-btn {
+  border-color: rgba(67,181,255,0.36) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(67,181,255,0.10),
+    0 0 0 1px rgba(67,181,255,0.14),
+    0 8px 18px rgba(0,0,0,0.30) !important;
+}
+
+.jog-combined .xy-pad .xy-home-btn .home-glyph {
+  width: 46px !important;
+  height: 46px !important;
+  color: #e6f2ff !important;
+}
+
+.jog-combined .xy-pad .xy-home-btn .home-glyph svg {
+  width: 46px !important;
+  height: 46px !important;
+  overflow: visible !important;
+}
+
+/* Z buttons */
+.jog-combined .z-stack .industrial-icon-btn {
+  width: 102px !important;
+  min-width: 102px !important;
+  max-width: 102px !important;
+  min-height: 84px !important;
+  border-radius: 18px !important;
+  background: linear-gradient(180deg, #58411c, #2d2319) !important;
+  border: 1px solid rgba(239, 182, 77, 0.42) !important;
+  box-shadow:
+    inset 0 1px 10px rgba(255,255,255,0.03),
+    0 8px 16px rgba(0,0,0,0.22) !important;
+  color: #fff4dc !important;
+}
+
+.jog-combined .z-stack .z-arrow-btn .icon-arrow {
+  font-size: 2.4rem !important;
+  line-height: 1 !important;
+  font-weight: 400 !important;
+  color: #fff4dc !important;
+  transform: translateY(-1px) !important;
+}
+
+.jog-combined .z-stack .z-home-btn .home-glyph {
+  width: 46px !important;
+  height: 46px !important;
+  color: #fff4dc !important;
+}
+
+.jog-combined .z-stack .z-home-btn .home-glyph svg {
+  width: 46px !important;
+  height: 46px !important;
+  overflow: visible !important;
+}
+
+/* neutralize old generic child-label rules */
+.jog-combined .industrial-icon-btn span:last-child,
+.jog-combined .industrial-icon-btn strong:last-child {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: normal !important;
+  line-height: inherit !important;
+}
+
+
+/* keep the Z column from collapsing */
+.jog-combined .z-inline,
+.jog-combined .z-stack {
+  width: 106px !important;
+  min-width: 106px !important;
+}
+
+/* subtle cluster tightening */
+.jog-combined .xy-pad {
+  gap: 10px !important;
+}
+
+.jog-combined .z-stack {
+  gap: 12px !important;
+}
+
+/* shared industrial button base */
+.jog-combined .industrial-icon-btn {
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: relative !important;
+  text-shadow: none !important;
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    border-color 120ms ease,
+    filter 120ms ease,
+    background 120ms ease !important;
+}
+
+.jog-combined .industrial-icon-btn * {
+  pointer-events: none !important;
+}
+
+.jog-combined .industrial-icon-btn .motion-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+}
+
+.jog-combined .industrial-icon-btn svg {
+  display: block !important;
+  overflow: visible !important;
+}
+
+.jog-combined .industrial-icon-btn svg path {
+  fill: none !important;
+  stroke: currentColor !important;
+  stroke-width: 3.5 !important;
+  stroke-linecap: round !important;
+  stroke-linejoin: round !important;
+}
+
+.jog-combined .industrial-icon-btn svg text {
+  fill: currentColor !important;
+  stroke: none !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* XY buttons */
+.jog-combined .xy-pad .industrial-icon-btn {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 21px !important;
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255,255,255,0.11), transparent 42%),
+    linear-gradient(180deg, #23374b 0%, #182a3c 100%) !important;
+  border: 1px solid rgba(130, 185, 230, 0.22) !important;
+  color: #e8f2ff !important;
+  box-shadow:
+    inset 0 1px 12px rgba(255,255,255,0.04),
+    inset 0 -8px 18px rgba(0,0,0,0.12),
+    0 8px 18px rgba(0,0,0,0.22) !important;
+}
+
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon {
+  width: 34px !important;
+  height: 34px !important;
+  color: #ecf5ff !important;
+}
+
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon svg {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+/* special XY home treatment */
+.jog-combined .xy-pad .xy-home-btn {
+  border-color: rgba(67,181,255,0.42) !important;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(110,190,255,0.15), transparent 40%),
+    linear-gradient(180deg, #22384e 0%, #17293b 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(67,181,255,0.14),
+    0 0 0 1px rgba(67,181,255,0.14),
+    0 10px 18px rgba(0,0,0,0.24),
+    0 0 16px rgba(67,181,255,0.08) !important;
+}
+
+.jog-combined .xy-pad .xy-home-btn::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 15px;
+  border: 1px solid rgba(67,181,255,0.12);
+  pointer-events: none;
+}
+
+.jog-combined .xy-pad .xy-home-btn .home-icon {
+  width: 54px !important;
+  height: 54px !important;
+  color: #eef6ff !important;
+}
+
+.jog-combined .xy-pad .xy-home-btn .home-icon svg {
+  width: 54px !important;
+  height: 54px !important;
+}
+
+/* Z buttons */
+.jog-combined .z-stack .industrial-icon-btn {
+  width: 106px !important;
+  min-width: 106px !important;
+  max-width: 106px !important;
+  min-height: 86px !important;
+  border-radius: 19px !important;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,220,150,0.10), transparent 38%),
+    linear-gradient(180deg, #6a4c1f 0%, #3b2b17 55%, #2a2118 100%) !important;
+  border: 1px solid rgba(239, 182, 77, 0.42) !important;
+  color: #fff4de !important;
+  box-shadow:
+    inset 0 1px 10px rgba(255,255,255,0.03),
+    inset 0 -10px 20px rgba(0,0,0,0.10),
+    0 8px 18px rgba(0,0,0,0.20),
+    0 0 12px rgba(239,182,77,0.04) !important;
+}
+
+.jog-combined .z-stack .z-arrow-btn .arrow-icon {
+  width: 36px !important;
+  height: 36px !important;
+  color: #fff4de !important;
+}
+
+.jog-combined .z-stack .z-arrow-btn .arrow-icon svg {
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* special Z home treatment */
+.jog-combined .z-stack .z-home-btn {
+  border-color: rgba(239,182,77,0.54) !important;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,225,150,0.14), transparent 38%),
+    linear-gradient(180deg, #6c4f22 0%, #3c2c18 55%, #2a2118 100%) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,225,150,0.08),
+    0 0 0 1px rgba(239,182,77,0.14),
+    0 10px 18px rgba(0,0,0,0.22),
+    0 0 16px rgba(239,182,77,0.08) !important;
+}
+
+.jog-combined .z-stack .z-home-btn::after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  border-radius: 13px;
+  border: 1px solid rgba(239,182,77,0.12);
+  pointer-events: none;
+}
+
+.jog-combined .z-stack .z-home-btn .home-icon {
+  width: 54px !important;
+  height: 54px !important;
+  color: #fff6e4 !important;
+}
+
+.jog-combined .z-stack .z-home-btn .home-icon svg {
+  width: 54px !important;
+  height: 54px !important;
+}
+
+/* hover / focus / active */
+.jog-combined .industrial-icon-btn:hover {
+  filter: brightness(1.05) !important;
+  transform: translateY(-1px) !important;
+}
+
+.jog-combined .industrial-icon-btn:focus-visible {
+  outline: 2px solid rgba(150, 210, 255, 0.55) !important;
+  outline-offset: 2px !important;
+}
+
+.jog-combined .z-stack .industrial-icon-btn:focus-visible {
+  outline-color: rgba(255, 220, 140, 0.55) !important;
+}
+
+.jog-combined .industrial-icon-btn:active {
+  transform: translateY(1px) !important;
+  box-shadow:
+    inset 0 2px 12px rgba(0,0,0,0.18),
+    0 4px 10px rgba(0,0,0,0.18) !important;
+  filter: brightness(0.98) !important;
+}
+
+/* neutralize old generic child-label rules */
+.jog-combined .industrial-icon-btn span:last-child,
+.jog-combined .industrial-icon-btn strong:last-child {
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: normal !important;
+  line-height: inherit !important;
+}
+
+
+/* pull Z rail inward and prevent right-edge clipping */
+.jog-combined .z-inline,
+.jog-combined .z-stack {
+  width: 94px !important;
+  min-width: 94px !important;
+}
+
+.jog-combined .z-stack .industrial-icon-btn {
+  width: 94px !important;
+  min-width: 94px !important;
+  max-width: 94px !important;
+  min-height: 86px !important;
+}
+
+/* give XY cluster a bit more breathing room */
+.jog-combined .xy-pad {
+  gap: 12px !important;
+}
+
+.jog-combined .xy-pad .industrial-icon-btn {
+  width: 92px !important;
+  height: 92px !important;
+  border-radius: 20px !important;
+}
+
+/* keep Z buttons visually consistent */
+.jog-combined .z-stack .industrial-icon-btn {
+  border-radius: 18px !important;
+}
+
+/* reduce the double-border/ring heaviness on home buttons */
+.jog-combined .xy-pad .xy-home-btn::after,
+.jog-combined .z-stack .z-home-btn::after {
+  display: none !important;
+}
+
+.jog-combined .xy-pad .xy-home-btn {
+  box-shadow:
+    inset 0 0 0 1px rgba(67,181,255,0.10),
+    0 8px 18px rgba(0,0,0,0.24),
+    0 0 14px rgba(67,181,255,0.06) !important;
+}
+
+.jog-combined .z-stack .z-home-btn {
+  box-shadow:
+    inset 0 0 0 1px rgba(255,225,150,0.08),
+    0 8px 18px rgba(0,0,0,0.22),
+    0 0 14px rgba(239,182,77,0.06) !important;
+}
+
+/* slightly smaller home icons so the buttons breathe */
+.jog-combined .xy-pad .xy-home-btn .home-icon,
+.jog-combined .z-stack .z-home-btn .home-icon {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.jog-combined .xy-pad .xy-home-btn .home-icon svg,
+.jog-combined .z-stack .z-home-btn .home-icon svg {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+/* keep arrows visually balanced with smaller buttons */
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon,
+.jog-combined .z-stack .z-arrow-btn .arrow-icon {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon svg,
+.jog-combined .z-stack .z-arrow-btn .arrow-icon svg {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+
+/* shrink the whole control cluster */
+.jog-combined {
+  column-gap: 22px !important;
+}
+
+.jog-combined .xy-pad {
+  gap: 8px !important;
+}
+
+/* smaller XY buttons */
+.jog-combined .xy-pad .industrial-icon-btn {
+  width: 78px !important;
+  height: 78px !important;
+  border-radius: 17px !important;
+}
+
+/* smaller XY arrows */
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon,
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+/* smaller XY home icon */
+.jog-combined .xy-pad .xy-home-btn .home-icon,
+.jog-combined .xy-pad .xy-home-btn .home-icon svg {
+  width: 43px !important;
+  height: 43px !important;
+}
+
+/* smaller Z rail */
+.jog-combined .z-inline,
+.jog-combined .z-stack {
+  width: 82px !important;
+  min-width: 82px !important;
+}
+
+.jog-combined .z-stack {
+  gap: 10px !important;
+}
+
+/* smaller Z buttons */
+.jog-combined .z-stack .industrial-icon-btn {
+  width: 82px !important;
+  min-width: 82px !important;
+  max-width: 82px !important;
+  min-height: 78px !important;
+  border-radius: 17px !important;
+}
+
+/* smaller Z arrows */
+.jog-combined .z-stack .z-arrow-btn .arrow-icon,
+.jog-combined .z-stack .z-arrow-btn .arrow-icon svg {
+  width: 31px !important;
+  height: 31px !important;
+}
+
+/* smaller Z home icon */
+.jog-combined .z-stack .z-home-btn .home-icon,
+.jog-combined .z-stack .z-home-btn .home-icon svg {
+  width: 43px !important;
+  height: 43px !important;
+}
+
+
+/* One shared button size for all 8 motion buttons. */
+.jog-combined .xy-pad .industrial-icon-btn,
+.jog-combined .z-stack .industrial-icon-btn {
+  box-sizing: border-box !important;
+  width: 92px !important;
+  min-width: 92px !important;
+  max-width: 92px !important;
+  height: 92px !important;
+  min-height: 92px !important;
+  max-height: 92px !important;
+  border-radius: 20px !important;
+}
+
+/* Make the Z column match the equal-size buttons exactly. */
+.jog-combined .z-inline,
+.jog-combined .z-stack {
+  width: 92px !important;
+  min-width: 92px !important;
+  max-width: 92px !important;
+}
+
+.jog-combined .z-stack {
+  gap: 12px !important;
+}
+
+/* Keep XY spacing reasonable with equal-size buttons. */
+.jog-combined .xy-pad {
+  gap: 10px !important;
+}
+
+/* Normalize arrow icon size across XY and Z. */
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon,
+.jog-combined .xy-pad .xy-arrow-btn .arrow-icon svg,
+.jog-combined .z-stack .z-arrow-btn .arrow-icon,
+.jog-combined .z-stack .z-arrow-btn .arrow-icon svg {
+  width: 34px !important;
+  height: 34px !important;
+}
+
+/* Normalize home icon size across XY Home and Z Home. */
+.jog-combined .xy-pad .xy-home-btn .home-icon,
+.jog-combined .xy-pad .xy-home-btn .home-icon svg,
+.jog-combined .z-stack .z-home-btn .home-icon,
+.jog-combined .z-stack .z-home-btn .home-icon svg {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+/* 0.9.2 industrial motion controls 4x4 grid */
+
+/* Turn the whole control area into one simple 4x4 grid. */
+.jog-combined {
+  --motion-btn-size: 80px;
+  --motion-gap: 12px;
+
+  display: grid !important;
+  grid-template-columns: repeat(4, var(--motion-btn-size)) !important;
+  grid-template-rows: repeat(4, var(--motion-btn-size)) !important;
+  gap: var(--motion-gap) !important;
+
+  justify-content: center !important;
+  align-content: center !important;
+  justify-items: stretch !important;
+  align-items: stretch !important;
+
+  width: calc((4 * var(--motion-btn-size)) + (3 * var(--motion-gap))) !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* Make the old wrapper groups disappear from layout so buttons become grid items. */
+.jog-combined .xy-pad,
+.jog-combined .z-stack,
+.jog-combined .z-inline {
+  display: contents !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Every motion button is the same size now. */
+.jog-combined .xy-pad .industrial-icon-btn,
+.jog-combined .z-stack .industrial-icon-btn,
+.jog-combined .z-inline .industrial-icon-btn {
+  box-sizing: border-box !important;
+  width: var(--motion-btn-size) !important;
+  min-width: var(--motion-btn-size) !important;
+  max-width: var(--motion-btn-size) !important;
+  height: var(--motion-btn-size) !important;
+  min-height: var(--motion-btn-size) !important;
+  max-height: var(--motion-btn-size) !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 18px !important;
+
+  justify-self: stretch !important;
+  align-self: stretch !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* 4x4 placement */
+.jog-combined .jog-button.up {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.jog-combined .jog-button.left {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .jog-button.home {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .jog-button.right {
+  grid-column: 3 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .jog-button.down {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+}
+
+.jog-combined .z-up-action {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+}
+
+.jog-combined .z-home-action {
+  grid-column: 4 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .z-down-action {
+  grid-column: 4 !important;
+  grid-row: 3 !important;
+}
+
+/* Keep the industrial color styling, but normalized for equal-size buttons. */
+.jog-combined .xy-pad .industrial-icon-btn,
+.jog-combined .jog-button.industrial-icon-btn {
+  background:
+    radial-gradient(circle at 50% 22%, rgba(255,255,255,0.11), transparent 42%),
+    linear-gradient(180deg, #23374b 0%, #182a3c 100%) !important;
+  border: 1px solid rgba(130, 185, 230, 0.22) !important;
+  color: #e8f2ff !important;
+  box-shadow:
+    inset 0 1px 12px rgba(255,255,255,0.04),
+    inset 0 -8px 18px rgba(0,0,0,0.12),
+    0 8px 18px rgba(0,0,0,0.22) !important;
+}
+
+.jog-combined .z-stack .industrial-icon-btn,
+.jog-combined .z-inline .industrial-icon-btn,
+.jog-combined .large-action.industrial-icon-btn {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,220,150,0.10), transparent 38%),
+    linear-gradient(180deg, #6a4c1f 0%, #3b2b17 55%, #2a2118 100%) !important;
+  border: 1px solid rgba(239, 182, 77, 0.42) !important;
+  color: #fff4de !important;
+  box-shadow:
+    inset 0 1px 10px rgba(255,255,255,0.03),
+    inset 0 -10px 20px rgba(0,0,0,0.10),
+    0 8px 18px rgba(0,0,0,0.20),
+    0 0 12px rgba(239,182,77,0.04) !important;
+}
+
+/* Home buttons still get a subtle accent. */
+.jog-combined .xy-home-btn {
+  border-color: rgba(67,181,255,0.42) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(67,181,255,0.10),
+    0 8px 18px rgba(0,0,0,0.24),
+    0 0 14px rgba(67,181,255,0.06) !important;
+}
+
+.jog-combined .z-home-btn {
+  border-color: rgba(239,182,77,0.54) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,225,150,0.08),
+    0 8px 18px rgba(0,0,0,0.22),
+    0 0 14px rgba(239,182,77,0.06) !important;
+}
+
+/* Normalize icon sizes for the new equal-size buttons. */
+.jog-combined .xy-arrow-btn .arrow-icon,
+.jog-combined .xy-arrow-btn .arrow-icon svg,
+.jog-combined .z-arrow-btn .arrow-icon,
+.jog-combined .z-arrow-btn .arrow-icon svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.jog-combined .xy-home-btn .home-icon,
+.jog-combined .xy-home-btn .home-icon svg,
+.jog-combined .z-home-btn .home-icon,
+.jog-combined .z-home-btn .home-icon svg {
+  width: 44px !important;
+  height: 44px !important;
+}
+
+/* Hover / active */
+.jog-combined .industrial-icon-btn:hover {
+  filter: brightness(1.05) !important;
+  transform: translateY(-1px) !important;
+}
+
+.jog-combined .industrial-icon-btn:active {
+  filter: brightness(0.98) !important;
+  transform: translateY(1px) !important;
+  box-shadow:
+    inset 0 2px 12px rgba(0,0,0,0.18),
+    0 4px 10px rgba(0,0,0,0.18) !important;
+}
+
+/* 0.9.2 4x4 grid fit tweak */
+.jog-combined {
+  --motion-btn-size: 72px !important;
+  --motion-gap: 10px !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  align-content: center !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+}
+
+.jog-combined .xy-pad .industrial-icon-btn,
+.jog-combined .z-stack .industrial-icon-btn,
+.jog-combined .z-inline .industrial-icon-btn {
+  width: var(--motion-btn-size) !important;
+  min-width: var(--motion-btn-size) !important;
+  max-width: var(--motion-btn-size) !important;
+  height: var(--motion-btn-size) !important;
+  min-height: var(--motion-btn-size) !important;
+  max-height: var(--motion-btn-size) !important;
+  border-radius: 16px !important;
+}
+
+.jog-combined .xy-arrow-btn .arrow-icon,
+.jog-combined .xy-arrow-btn .arrow-icon svg,
+.jog-combined .z-arrow-btn .arrow-icon,
+.jog-combined .z-arrow-btn .arrow-icon svg {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.jog-combined .xy-home-btn .home-icon,
+.jog-combined .xy-home-btn .home-icon svg,
+.jog-combined .z-home-btn .home-icon,
+.jog-combined .z-home-btn .home-icon svg {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+/* 0.9.2 4x4 grid lower active rows */
+
+/* Keep the 4x4 grid, but use rows 2-4 so row 1 acts as top breathing room. */
+.jog-combined .jog-button.up {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .jog-button.left {
+  grid-column: 1 !important;
+  grid-row: 3 !important;
+}
+
+.jog-combined .jog-button.home {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+}
+
+.jog-combined .jog-button.right {
+  grid-column: 3 !important;
+  grid-row: 3 !important;
+}
+
+.jog-combined .jog-button.down {
+  grid-column: 2 !important;
+  grid-row: 4 !important;
+}
+
+.jog-combined .z-up-action {
+  grid-column: 4 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .z-home-action {
+  grid-column: 4 !important;
+  grid-row: 3 !important;
+}
+
+.jog-combined .z-down-action {
+  grid-column: 4 !important;
+  grid-row: 4 !important;
+}
+
+/* Slightly compact the grid so the lowered rows still fit cleanly. */
+.jog-combined {
+  --motion-btn-size: 68px !important;
+  --motion-gap: 9px !important;
+}
+
+/* 0.9.2 centered 4x3 motion grid */
+
+/*
+  Use the actual occupied shape:
+  4 columns x 3 rows, centered inside the card.
+*/
+.jog-combined {
+  --motion-btn-size: 76px !important;
+  --motion-gap: 12px !important;
+
+  display: grid !important;
+  grid-template-columns: repeat(4, var(--motion-btn-size)) !important;
+  grid-template-rows: repeat(3, var(--motion-btn-size)) !important;
+  gap: var(--motion-gap) !important;
+
+  width: calc((4 * var(--motion-btn-size)) + (3 * var(--motion-gap))) !important;
+  height: calc((3 * var(--motion-btn-size)) + (2 * var(--motion-gap))) !important;
+
+  place-content: center !important;
+  place-items: center !important;
+
+  margin: auto !important;
+  padding: 0 !important;
+}
+
+/* Center the complete grid inside the surrounding card. */
+.xy-card {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Make wrappers invisible to layout so all buttons are direct grid items. */
+.jog-combined .xy-pad,
+.jog-combined .z-inline,
+.jog-combined .z-stack {
+  display: contents !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+/* Equal-size buttons. */
+.jog-combined .industrial-icon-btn {
+  box-sizing: border-box !important;
+  width: var(--motion-btn-size) !important;
+  min-width: var(--motion-btn-size) !important;
+  max-width: var(--motion-btn-size) !important;
+  height: var(--motion-btn-size) !important;
+  min-height: var(--motion-btn-size) !important;
+  max-height: var(--motion-btn-size) !important;
+  border-radius: 17px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  justify-self: center !important;
+  align-self: center !important;
+}
+
+/* 4-column x 3-row placement */
+.jog-combined .jog-button.up {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+}
+
+.jog-combined .jog-button.left {
+  grid-column: 1 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .jog-button.home {
+  grid-column: 2 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .jog-button.right {
+  grid-column: 3 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .jog-button.down {
+  grid-column: 2 !important;
+  grid-row: 3 !important;
+}
+
+.jog-combined .z-up-action {
+  grid-column: 4 !important;
+  grid-row: 1 !important;
+}
+
+.jog-combined .z-home-action {
+  grid-column: 4 !important;
+  grid-row: 2 !important;
+}
+
+.jog-combined .z-down-action {
+  grid-column: 4 !important;
+  grid-row: 3 !important;
+}
+
+/* Keep icons proportional to the smaller equal buttons. */
+.jog-combined .xy-arrow-btn .arrow-icon,
+.jog-combined .xy-arrow-btn .arrow-icon svg,
+.jog-combined .z-arrow-btn .arrow-icon,
+.jog-combined .z-arrow-btn .arrow-icon svg {
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.jog-combined .xy-home-btn .home-icon,
+.jog-combined .xy-home-btn .home-icon svg,
+.jog-combined .z-home-btn .home-icon,
+.jog-combined .z-home-btn .home-icon svg {
+  width: 43px !important;
+  height: 43px !important;
+}

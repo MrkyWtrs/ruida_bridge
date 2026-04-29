@@ -1,10 +1,10 @@
-# Ruida Bridge 0.9.1 Controller Extents Checkpoint
+# Ruida Bridge 0.9.2 Controller Extents Checkpoint
 
 Ruida Bridge is a Home Assistant App/add-on that connects a Ruida laser controller to Home Assistant using MQTT discovery and a local web dashboard.
 
 ## Current baseline
 
-**Version:** 0.9.1 Controller Extents Checkpoint
+**Version:** 0.9.2 Controller Extents Checkpoint
 
 Active frontend files are only in `static/`:
 

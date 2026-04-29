@@ -61,20 +61,8 @@ function getMoveBoundsFromState(data) {
   };
 }
 
-function validateMoveTargetBounds(x, y, z, xChanged, yChanged, zChanged) {
+async function validateMoveTargetBounds(x, y, z, xChanged, yChanged, zChanged) {
   const errors = [];
-
-  if (xChanged && x !== null && x < 0) {
-    errors.push(`X target ${x.toFixed(2)} mm is below 0.`);
-  }
-
-  if (yChanged && y !== null && y < 0) {
-    errors.push(`Y target ${y.toFixed(2)} mm is below 0.`);
-  }
-
-  if (zChanged && z !== null && z < 0) {
-    errors.push(`Z target ${z.toFixed(2)} mm is below 0.`);
-  }
 
   if (xChanged && x !== null && currentMoveBounds.xMax !== null && x > currentMoveBounds.xMax) {
     errors.push(`X target ${x.toFixed(2)} mm exceeds X bed limit ${currentMoveBounds.xMax.toFixed(2)} mm.`);
@@ -88,16 +76,25 @@ function validateMoveTargetBounds(x, y, z, xChanged, yChanged, zChanged) {
     errors.push(`Z target ${z.toFixed(2)} mm exceeds Z travel limit ${currentMoveBounds.zMax.toFixed(2)} mm.`);
   }
 
-  if (errors.length > 0) {
-    const message = `Move blocked. Target is outside the configured machine limits.\n\n${errors.join('\n')}`;
-    window.alert(message);
+  if (errors.length) {
     showResult({
       ok: false,
-      cmd: 'move_to_position',
       error: 'target_out_of_bounds',
       details: errors,
       bounds: currentMoveBounds,
     }, true);
+
+    await showStyledDialog({
+      title: 'Out of bounds',
+      message: 'The requested move exceeds the configured machine travel limits.',
+      details: errors,
+      icon: '!',
+      danger: true,
+      buttons: [
+        { label: 'OK', value: false, variant: 'primary', focus: true },
+      ],
+    });
+
     return false;
   }
 
@@ -335,7 +332,7 @@ async function moveToEnteredPosition() {
     return;
   }
 
-  if (!validateMoveTargetBounds(x, y, z, xChanged, yChanged, zChanged)) {
+  if (!await validateMoveTargetBounds(x, y, z, xChanged, yChanged, zChanged)) {
     return;
   }
 
@@ -971,6 +968,116 @@ setInterval(loadState, 2000);
 setInterval(() => refreshPreviewImage(false), 12000);
 
 
+
+
+
+function showStyledDialog(options = {}) {
+  const overlay = document.getElementById('ruidaDialogOverlay');
+  const box = document.getElementById('ruidaDialogBox');
+  const iconEl = document.getElementById('ruidaDialogIcon');
+  const titleEl = document.getElementById('ruidaDialogTitle');
+  const messageEl = document.getElementById('ruidaDialogMessage');
+  const detailsEl = document.getElementById('ruidaDialogDetails');
+  const actionsEl = document.getElementById('ruidaDialogActions');
+
+  const title = String(options.title || 'Notice');
+  const message = String(options.message || '');
+  const icon = String(options.icon || '!');
+  const details = Array.isArray(options.details) ? options.details.filter(Boolean).map(String) : [];
+  const danger = Boolean(options.danger);
+  const buttons = Array.isArray(options.buttons) && options.buttons.length
+    ? options.buttons
+    : [{ label: 'OK', value: true, variant: 'primary' }];
+
+  if (!overlay || !box || !iconEl || !titleEl || !messageEl || !detailsEl || !actionsEl) {
+    const fallback = [title, message, ...details].filter(Boolean).join('\n\n');
+    const hasCancel = buttons.length > 1;
+    const result = hasCancel ? window.confirm(fallback) : (window.alert(fallback), true);
+    return Promise.resolve(result);
+  }
+
+  titleEl.textContent = title;
+  messageEl.textContent = message;
+  iconEl.textContent = icon;
+
+  box.classList.toggle('danger', danger);
+
+  detailsEl.innerHTML = '';
+  if (details.length) {
+    for (const detail of details) {
+      const li = document.createElement('li');
+      li.textContent = detail;
+      detailsEl.appendChild(li);
+    }
+    detailsEl.hidden = false;
+  } else {
+    detailsEl.hidden = true;
+  }
+
+  actionsEl.innerHTML = '';
+
+  return new Promise((resolve) => {
+    const previousFocus = document.activeElement;
+    const buttonElements = [];
+
+    const cleanup = () => {
+      for (const button of buttonElements) {
+        button.removeEventListener('click', button._ruidaDialogClick);
+      }
+      document.removeEventListener('keydown', onKeyDown);
+      overlay.hidden = true;
+      actionsEl.innerHTML = '';
+
+      if (previousFocus && typeof previousFocus.focus === 'function') {
+        previousFocus.focus();
+      }
+    };
+
+    const finish = (value) => {
+      cleanup();
+      resolve(value);
+    };
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        const cancelButton = buttons.find((button) => button.cancel);
+        finish(cancelButton ? cancelButton.value : false);
+      }
+      if (event.key === 'Enter' && buttonElements.length === 1) {
+        finish(buttons[0].value);
+      }
+    };
+
+    for (const buttonConfig of buttons) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'ruida-dialog-button';
+
+      if (buttonConfig.variant === 'primary') {
+        button.classList.add('primary');
+      }
+      if (buttonConfig.variant === 'danger') {
+        button.classList.add('danger');
+      }
+
+      button.textContent = String(buttonConfig.label || 'OK');
+      button._ruidaDialogClick = () => finish(buttonConfig.value);
+      button.addEventListener('click', button._ruidaDialogClick);
+      buttonElements.push(button);
+      actionsEl.appendChild(button);
+    }
+
+    document.addEventListener('keydown', onKeyDown);
+    overlay.hidden = false;
+
+    const preferredFocus = buttonElements.find((button, index) => buttons[index]?.focus) || buttonElements[0];
+    if (preferredFocus) {
+      preferredFocus.focus();
+    }
+  });
+}
+
+
 /* 0.9.1 run selected controller slot + stop job */
 async function runSelectedControllerFile() {
   if (!selectedFile) {
@@ -984,7 +1091,16 @@ async function runSelectedControllerFile() {
   }
 
   if (selectedFile.slot === null || selectedFile.slot === undefined || selectedFile.source === 'local') {
-    window.alert('This file is local only and cannot be started from the controller yet. Use Run Selected only with files listed from the controller slots.');
+    await showStyledDialog({
+      title: 'Cannot run local file',
+      message: 'This file is local only and cannot be started from the controller yet.',
+      details: ['Use Run Selected only with files listed from the controller slots.'],
+      icon: '!',
+      danger: false,
+      buttons: [
+        { label: 'OK', value: true, variant: 'primary', focus: true },
+      ],
+    });
     showResult({
       ok: false,
       cmd: 'run_file_slot',
@@ -996,6 +1112,28 @@ async function runSelectedControllerFile() {
   }
 
   const slot = Number(selectedFile.slot);
+  const confirmed = await showStyledDialog({
+    title: 'Engage laser?',
+    message: 'Run Selected will start the selected controller file and may engage the laser.',
+    details: [
+      `${selectedFile.name || 'Selected controller file'} (slot ${slot})`,
+      'Confirm that the lid, ventilation, material, focus, and work area are safe before proceeding.',
+    ],
+    icon: '⚠',
+    danger: true,
+    buttons: [
+      { label: 'NO', value: false, cancel: true, focus: true },
+      { label: 'YES', value: true, variant: 'danger' },
+    ],
+  });
+  if (!confirmed) {
+    console.info('Run Selected cancelled by user.', {
+      file: selectedFile.name || '',
+      slot,
+    });
+    return { ok: false, cancelled: true };
+  }
+
   if (!Number.isInteger(slot) || slot < 1 || slot > 255) {
     showResult({
       ok: false,

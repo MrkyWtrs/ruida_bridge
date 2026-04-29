@@ -4,7 +4,7 @@ Ruida Bridge is a Home Assistant app that exposes Ruida controller data and cont
 
 ## Current version
 
-Working baseline: **0.9.1 Controller Extents Checkpoint**
+Working baseline: **0.9.2 Controller Extents Checkpoint**
 
 ## What it does
 

@@ -113,18 +113,64 @@
           <section class="card xy-card">
             <div class="jog-combined">
               <div class="xy-pad">
-                <button class="jog-button up" type="button" data-action="up"><span class="arrow">↑</span><span>Up</span></button>
-                <button class="jog-button left" type="button" data-action="left"><span class="arrow">←</span><span>Left</span></button>
-                <button class="jog-button home" type="button" data-action="home"><span class="home-icon">⌂</span><span>Home</span></button>
-                <button class="jog-button right" type="button" data-action="right"><span class="arrow">→</span><span>Right</span></button>
-                <button class="jog-button down" type="button" data-action="down"><span class="arrow">↓</span><span>Down</span></button>
+                <button class="jog-button up industrial-icon-btn xy-arrow-btn" type="button" data-action="up" title="Jog Up" aria-label="Jog Up"><span class="motion-icon arrow-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M32 50V15M32 15L21 26M32 15L43 26" />
+  </svg>
+</span></button>
+                <button class="jog-button left industrial-icon-btn xy-arrow-btn" type="button" data-action="left" title="Jog Left" aria-label="Jog Left"><span class="motion-icon arrow-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M50 32H15M15 32L26 21M15 32L26 43" />
+  </svg>
+</span></button>
+                <button class="jog-button home industrial-icon-btn xy-home-btn" type="button" data-action="home" title="Home XY" aria-label="Home XY"><span class="motion-icon home-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M14 30.5L32 15l18 15.5V49a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z" />
+    <path d="M9.5 34L32 14.5 54.5 34" />
+    <text x="32" y="40"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          font-size="18"
+          font-weight="800"
+          font-family="Segoe UI, Arial, sans-serif">XY</text>
+  </svg>
+</span></button>
+                <button class="jog-button right industrial-icon-btn xy-arrow-btn" type="button" data-action="right" title="Jog Right" aria-label="Jog Right"><span class="motion-icon arrow-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M14 32H49M49 32L38 21M49 32L38 43" />
+  </svg>
+</span></button>
+                <button class="jog-button down industrial-icon-btn xy-arrow-btn" type="button" data-action="down" title="Jog Down" aria-label="Jog Down"><span class="motion-icon arrow-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M32 14V49M32 49L21 38M32 49L43 38" />
+  </svg>
+</span></button>
               </div>
 
               <div class="z-inline">
                 <div class="z-stack">
-                  <button class="large-action" type="button" data-action="z_up"><span>↑</span><strong>Z Up</strong></button>
-                  <button id="zHomeButton" class="large-action z-home-action" type="button" data-action="z_home"><span>⌂</span><strong>Z Home</strong></button>
-                  <button class="large-action" type="button" data-action="z_down"><span>↓</span><strong>Z Down</strong></button>
+                  <button id="zUpButton" class="large-action z-up-action industrial-icon-btn z-arrow-btn" type="button" data-action="z_up" title="Jog Z Up" aria-label="Jog Z Up"><span class="motion-icon arrow-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M32 50V15M32 15L21 26M32 15L43 26" />
+  </svg>
+</span></button>
+                  <button id="zHomeButton" class="large-action z-home-action industrial-icon-btn z-home-btn" type="button" data-action="z_home" title="Home Z" aria-label="Home Z"><span class="motion-icon home-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M14 30.5L32 15l18 15.5V49a2 2 0 0 1-2 2H16a2 2 0 0 1-2-2z" />
+    <path d="M9.5 34L32 14.5 54.5 34" />
+    <text x="32" y="40"
+          text-anchor="middle"
+          dominant-baseline="middle"
+          font-size="20"
+          font-weight="800"
+          font-family="Segoe UI, Arial, sans-serif">Z</text>
+  </svg>
+</span></button>
+                  <button id="zDownButton" class="large-action z-down-action industrial-icon-btn z-arrow-btn" type="button" data-action="z_down" title="Jog Z Down" aria-label="Jog Z Down"><span class="motion-icon arrow-icon" aria-hidden="true">
+  <svg viewBox="0 0 64 64" focusable="false">
+    <path d="M32 14V49M32 49L21 38M32 49L43 38" />
+  </svg>
+</span></button>
                 </div>
               </div>
             </div>
@@ -215,6 +261,19 @@
     </section>
   </main>
 
-  <script src="app.js?v=0.9.1-controller-extents"></script>
+  <script src="app.js?v=0.9.1-unified-dialog"></script>
+
+  <div id="ruidaDialogOverlay" class="ruida-dialog-overlay" hidden>
+    <div id="ruidaDialogBox" class="ruida-dialog-box" role="dialog" aria-modal="true" aria-labelledby="ruidaDialogTitle" aria-describedby="ruidaDialogMessage">
+      <div id="ruidaDialogIcon" class="ruida-dialog-icon">!</div>
+      <div class="ruida-dialog-body">
+        <h2 id="ruidaDialogTitle">Notice</h2>
+        <p id="ruidaDialogMessage" class="ruida-dialog-message"></p>
+        <ul id="ruidaDialogDetails" class="ruida-dialog-details" hidden></ul>
+      </div>
+      <div id="ruidaDialogActions" class="ruida-dialog-actions"></div>
+    </div>
+  </div>
+
 </body>
 </html>
