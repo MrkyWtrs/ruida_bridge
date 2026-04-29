@@ -1,14 +1,16 @@
 # Ruida Bridge
 
-Home Assistant add-on for connecting a Ruida laser controller to Home Assistant via MQTT.
+Home Assistant add-on for connecting a Ruida laser controller to Home Assistant using MQTT.
 
-Ruida Bridge gives you a mobile-friendly Home Assistant dashboard for monitoring and controlling your Ruida laser from your phone, tablet, or desktop.  See the features list below.
+Ruida Bridge gives you a mobile-friendly Home Assistant dashboard for monitoring and controlling your Ruida laser from your phone, tablet, or desktop. See the features list below.
 
 > [!WARNING]
 > Ruida Bridge can send real movement and job commands to a physical laser controller.
 > Use it only on a trusted local Home Assistant system. Do not expose the add-on, MQTT broker, or Ingress UI to the public internet.
-> This has only been tested on a model RDC6442S-B(EC) controller, but other models may work.  If they do, please let us know so we can include them in the list of supported controllers.
+> Ruida Bridge has only been tested on an RDC6442S-B(EC) controller.
 
+> [!NOTE]
+> Other Ruida models may work. If you test another model successfully, please let us know so it can be added to the supported controller list.
 <img width="1815" height="908" alt="Ruida Bridge dashboard" src="https://github.com/user-attachments/assets/7ece9bef-f57d-4a74-8ef0-ee4a031b51d7" />
 
 ## What it does
