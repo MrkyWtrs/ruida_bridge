@@ -12,7 +12,9 @@ Ruida Bridge gives you a mobile-friendly Home Assistant dashboard for monitoring
 > Ruida Bridge has only been tested on an RDC6442S-B(EC) controller.
 
 > [!NOTE]
-Other Ruida models may work. If you test another model successfully, please let us know so it can be added to the supported controller list.
+Other Ruida models may work.
+>
+> If you test another model successfully, please let us know so it can be added to the supported controller list.
 <img width="1815" height="908" alt="Ruida Bridge dashboard" src="https://github.com/user-attachments/assets/7ece9bef-f57d-4a74-8ef0-ee4a031b51d7" />
 
 ## What it does
