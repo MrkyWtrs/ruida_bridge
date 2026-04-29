@@ -6,9 +6,9 @@ Ruida Bridge gives you a mobile-friendly Home Assistant dashboard for monitoring
 
 > [!WARNING]
 > Ruida Bridge can send real movement and job commands to a physical laser controller.
-
+> 
 > Use it only on a trusted local Home Assistant system. Do not expose the add-on, MQTT broker, or Ingress UI to the public internet.
-
+>
 > Ruida Bridge has only been tested on an RDC6442S-B(EC) controller.
 
 > [!NOTE]
