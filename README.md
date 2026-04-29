@@ -1,59 +1,79 @@
 # Ruida Bridge
 
-Ruida Bridge is a Home Assistant App/add-on for connecting a Ruida laser controller to Home Assistant using MQTT discovery and a local web dashboard.
-
-It exposes machine status, X/Y/Z position, jog controls, rotary controls, saved controller files, RD file downloads, and RD preview rendering directly inside Home Assistant.
+Home Assistant add-on for connecting a Ruida laser controller to Home Assistant with MQTT discovery, machine status, jog controls, rotary controls, saved file listing, job launching, and RD file preview rendering.
 
 > [!WARNING]
-> Ruida Bridge can send real movement commands to a physical laser controller.
->
+> Ruida Bridge can send real movement and job commands to a physical laser controller.
 > Use it only on a trusted local Home Assistant system. Do not expose the add-on, MQTT broker, or Ingress UI to the public internet.
->
-> Keep a hand near the emergency stop while testing movement commands.
 
----
+<img width="1815" height="908" alt="Ruida Bridge dashboard" src="https://github.com/user-attachments/assets/7ece9bef-f57d-4a74-8ef0-ee4a031b51d7" />
 
-<img width="1815" height="908" alt="image" src="https://github.com/user-attachments/assets/7ece9bef-f57d-4a74-8ef0-ee4a031b51d7" />
+## What it does
 
+Ruida Bridge provides a local Home Assistant dashboard for basic Ruida laser controller interaction.
 
----
+Current features include:
 
-## Current version
-
-**0.9.0 Continuous Jog Checkpoint**
-
-This release adds press-and-hold continuous jog support for the dashboard XY and Z controls.
-
----
-
-## Features
-
-- Home Assistant App/add-on packaging
-- Home Assistant Ingress web dashboard
-- MQTT discovery for Home Assistant entities
-- Machine status polling
-- X, Y, and Z position reporting
+- Home Assistant add-on packaging with Ingress support
+- MQTT connection to Home Assistant / Mosquitto
+- MQTT discovery for Ruida Bridge entities
+- Machine online/offline status
+- Machine status readout
+- Current X, Y, and Z position display
 - XY jog controls
-- Z jog controls
-- Press-and-hold continuous jog from the dashboard
-- Guarded absolute XY movement
-- Guarded Go To Z movement
-- Rotary enable/disable control
-- Rotary diameter read/write support
-- Saved file list from the Ruida controller
-- Controller file download support
-- Local RD, LBRN, and LBRN2 file listing
-- RD preview rendering
-- Preview image publishing through MQTT
-- Bed-view and geometry-view preview modes
-- Laser 1 and Laser 2 enable-state reporting
-- Machine setting attributes for useful controller values
+- Z up, Z down, and Z home controls
+- XY home control
+- Move-to-position controls for X, Y, and Z
+- Laser enable state display
+- Machine settings display
+- Rotary enable and diameter controls
+- Saved controller file list
+- Refresh / get files controls
+- Run selected file command
+- Stop job command
+- RD preview rendering to a Home Assistant-accessible image path
 
----
+## Project status
 
+This project is actively being developed and tested against a real Ruida controller.
 
+It is currently intended for local Home Assistant use by people who understand the risks of sending motion and job commands to laser hardware.
 
+Expect ongoing changes as the add-on is refined.
 
-```text
-docs/screenshots/dashboard.png
-docs/screenshots/home-assistant-device.png
+## Requirements
+
+- Home Assistant with Supervisor
+- MQTT broker, such as the Mosquitto add-on
+- Ruida laser controller reachable on the local network
+- Local network access between Home Assistant and the Ruida controller
+
+## Installation
+
+1. Copy the `ruida_bridge` add-on folder into your Home Assistant add-ons directory.
+2. Reload local add-ons in Home Assistant.
+3. Install the **Ruida Bridge** add-on.
+4. Configure the add-on options.
+5. Start the add-on.
+6. Open the Ruida Bridge Ingress page.
+
+## Required configuration
+
+At minimum, configure:
+
+- MQTT host
+- MQTT username
+- MQTT password
+- Ruida controller IP address
+- Maximum X travel
+- Maximum Y travel
+
+Example values:
+
+```yaml
+mqtt_host: core-mosquitto
+mqtt_user: mqtt-user
+mqtt_pass: your-password
+ruida_ip: 192.168.1.11
+ruida_max_x_mm: 1000
+ruida_max_y_mm: 600
