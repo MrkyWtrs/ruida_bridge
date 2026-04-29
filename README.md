@@ -13,7 +13,8 @@ It exposes machine status, X/Y/Z position, jog controls, rotary controls, saved 
 
 ---
 
-<img width="1809" height="892" alt="image" src="https://github.com/user-attachments/assets/9b46a638-471b-4ccc-bd58-8bcf54e0dd75" />
+<img width="1815" height="908" alt="image" src="https://github.com/user-attachments/assets/7ece9bef-f57d-4a74-8ef0-ee4a031b51d7" />
+
 
 ---
 
