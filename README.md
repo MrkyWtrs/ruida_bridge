@@ -9,7 +9,7 @@ Home Assistant add-on for connecting a Ruida laser controller to Home Assistant 
 >
 > Ruida Bridge has only been tested on an RDC6442S-B(EC) controller.
 
-> [!NOTE]
+> [!NOTES]
 Other Ruida models may work.
 >
 > If you test another model successfully, please let us know so it can be added to the supported controller list.
