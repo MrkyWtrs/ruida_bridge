@@ -5473,3 +5473,106 @@ body::-webkit-scrollbar-thumb {
 .files-footer .run-selected-button:focus > span:not(:first-child) {
   color: var(--text) !important;
 }
+
+/* 0.9.2 HA expanded-sidebar responsive fix
+   Keep the dashboard usable when Home Assistant's sidebar reduces viewport width. */
+@media (max-width: 1180px) and (min-width: 821px) {
+  #dashboardGrid.quadrant-grid,
+  .quadrant-grid {
+    grid-template-columns: minmax(340px, 1fr) minmax(320px, 0.9fr) !important;
+    grid-template-areas:
+      "left middle"
+      "right right" !important;
+    gap: 14px !important;
+  }
+
+  .left-column {
+    grid-area: left !important;
+    min-width: 0 !important;
+  }
+
+  .middle-column {
+    grid-area: middle !important;
+    min-width: 0 !important;
+  }
+
+  .right-column {
+    grid-area: right !important;
+    min-width: 0 !important;
+  }
+
+  .xy-card {
+    min-width: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .jog-combined {
+    --motion-btn-size: clamp(60px, 6.2vw, 72px) !important;
+    --motion-gap: clamp(7px, 0.9vw, 10px) !important;
+    width: calc((4 * var(--motion-btn-size)) + (3 * var(--motion-gap))) !important;
+    height: calc((3 * var(--motion-btn-size)) + (2 * var(--motion-gap))) !important;
+  }
+
+  .jog-combined .industrial-icon-btn {
+    width: var(--motion-btn-size) !important;
+    min-width: var(--motion-btn-size) !important;
+    max-width: var(--motion-btn-size) !important;
+    height: var(--motion-btn-size) !important;
+    min-height: var(--motion-btn-size) !important;
+    max-height: var(--motion-btn-size) !important;
+  }
+
+  .jog-combined .xy-arrow-btn .arrow-icon,
+  .jog-combined .xy-arrow-btn .arrow-icon svg,
+  .jog-combined .z-arrow-btn .arrow-icon,
+  .jog-combined .z-arrow-btn .arrow-icon svg {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .jog-combined .xy-home-btn .home-icon,
+  .jog-combined .xy-home-btn .home-icon svg,
+  .jog-combined .z-home-btn .home-icon,
+  .jog-combined .z-home-btn .home-icon svg {
+    width: 38px !important;
+    height: 38px !important;
+  }
+}
+
+/* 0.9.2 reduce motion control buttons by ~10% to prevent sidebar clipping */
+.jog-combined {
+  --motion-btn-size: 68px !important;
+  --motion-gap: 11px !important;
+
+  width: calc((4 * var(--motion-btn-size)) + (3 * var(--motion-gap))) !important;
+  height: calc((3 * var(--motion-btn-size)) + (2 * var(--motion-gap))) !important;
+}
+
+.jog-combined .industrial-icon-btn,
+.jog-combined .xy-pad .industrial-icon-btn,
+.jog-combined .z-stack .industrial-icon-btn,
+.jog-combined .z-inline .industrial-icon-btn,
+.jog-combined .large-action.industrial-icon-btn {
+  width: var(--motion-btn-size) !important;
+  min-width: var(--motion-btn-size) !important;
+  max-width: var(--motion-btn-size) !important;
+  height: var(--motion-btn-size) !important;
+  min-height: var(--motion-btn-size) !important;
+  max-height: var(--motion-btn-size) !important;
+}
+
+.jog-combined .xy-arrow-btn .arrow-icon,
+.jog-combined .xy-arrow-btn .arrow-icon svg,
+.jog-combined .z-arrow-btn .arrow-icon,
+.jog-combined .z-arrow-btn .arrow-icon svg {
+  width: 27px !important;
+  height: 27px !important;
+}
+
+.jog-combined .xy-home-btn .home-icon,
+.jog-combined .xy-home-btn .home-icon svg,
+.jog-combined .z-home-btn .home-icon,
+.jog-combined .z-home-btn .home-icon svg {
+  width: 39px !important;
+  height: 39px !important;
+}
